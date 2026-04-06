@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+:root {
+  --color-primary: #e0fd35;
+  --color-secondary: #1c1c1c;
+  --color-accent: #ff6b00;
+}
+
+@theme {
+  --font-sans: "Inter Tight", sans-serif;
+}
+
+/* body {
+  font-family: var(--font-sans)
+} */
 
 button {
   cursor: pointer;

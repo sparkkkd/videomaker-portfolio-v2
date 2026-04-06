@@ -87,7 +87,9 @@ export const ProjectTabsAndContent = ({
 									priority={false}
 								/>
 							</div>
-							<h4 className='mt-[30px] text-white text-[32px]'>{label}</h4>
+							<h4 className='mt-[20px] text-white text-[32px] leading-none'>
+								{label}
+							</h4>
 						</motion.div>
 					))}
 				</motion.div>

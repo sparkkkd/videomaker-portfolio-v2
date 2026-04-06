@@ -1,18 +1,16 @@
-// components/features/AnimatedHeroIcons.tsx
 'use client'
 
 import { motion, useAnimation } from 'framer-motion'
 import { useEffect } from 'react'
 import Image from 'next/image'
 
-// Конфигурация иконок
 const HERO_ICONS = [
 	{
 		src: '/hero-left.svg',
 		alt: '',
 		width: 172,
 		height: 172,
-		className: 'absolute top-[150px] left-[35px] z-10',
+		className: 'absolute top-[150px] left-[-85px] z-10',
 		baseRotate: -12,
 		floatY: [0, -15, 0],
 		floatRotate: [-12, -9, -12],
@@ -25,7 +23,7 @@ const HERO_ICONS = [
 		alt: '',
 		width: 130,
 		height: 130,
-		className: 'absolute right-[158px] top-[-30px] z-10',
+		className: 'absolute right-[35px] top-[-30px] z-10',
 		baseRotate: -8,
 		floatY: [0, -10, 0],
 		floatRotate: [-8, -5, -8],
@@ -38,7 +36,7 @@ const HERO_ICONS = [
 		alt: '',
 		width: 206,
 		height: 206,
-		className: 'absolute bottom-[227px] right-[32px] z-10',
+		className: 'absolute bottom-[227px] right-[-82px] z-10',
 		baseRotate: 10,
 		floatY: [0, -20, 0],
 		floatRotate: [10, 13, 10],
