@@ -14,8 +14,8 @@ export const HeroCheckbox = ({ className }: HeroCheckboxProps) => {
 		<div
 			className={twMerge(
 				className,
-				'relative mb-[-7px] w-[111px] h-[63px] inline-block  rounded-full cursor-pointer transition-all duration-300',
-				`${isActive ? 'bg-[#e0fd35]' : 'bg-[#7c8d1c]'}`,
+				'relative mb-[-7px] w-[111px] h-[63px] inline-block  rounded-full shadow-[inset_0_0_9px_0_#000] cursor-pointer transition-all duration-300',
+				`${isActive ? 'bg-[#e0fd35]' : 'bg-[#fff]'}`,
 			)}
 			onClick={() => setIsActive((prev) => !prev)}
 		>

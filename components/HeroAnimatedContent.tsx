@@ -12,13 +12,13 @@ interface HeroAnimatedContentProps {
 export const HeroAnimatedContent = ({}: HeroAnimatedContentProps) => {
 	return (
 		<motion.div
-			className='mx-auto max-w-[916px]'
+			className='mx-auto max-w-[948px]'
 			variants={staggerChildren}
 			initial='initial'
 			animate='animate'
 		>
 			<motion.div
-				className='text-[88px] text-center font-medium leading-[95%]'
+				className='text-[88px] text-center font-semibold leading-[95%]'
 				variants={fadeInUpDelay(0.6)}
 			>
 				<span>Оживляю</span> <HeroCheckbox />{' '}

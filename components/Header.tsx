@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Container } from './Container'
 import { twMerge } from 'tailwind-merge'
+import Link from 'next/link'
 
 interface HeaderProps {
 	className?: string
@@ -8,22 +9,27 @@ interface HeaderProps {
 
 export const Header = ({ className }: HeaderProps) => {
 	return (
-		<header className={twMerge(className, 'mt-[60px]')}>
+		<header className={twMerge(className, 'absolute top-[60px] w-full')}>
 			<Container>
 				<div className='py-6 px-[30px] flex items-center justify-between bg-[#141414] rounded-[17px]'>
-					<div className='py-3 px-[25px] flex items-center gap-2.5 text-black bg-white rounded-[10px]'>
+					<Link
+						href='/resume'
+						className='py-3 px-[25px] flex items-center gap-2.5 text-black bg-white rounded-[10px]'
+					>
 						<Image
 							src='/avatar.png'
-							alt='Аватар пользователя'
+							alt='Dmitriy'
 							width={36}
 							height={36}
 							className='rounded-full'
 							priority
 						/>
 						<span>Мое резюме</span>
-					</div>
+					</Link>
 
-					<Image src='/logo.svg' alt='logo' width={84} height={57} />
+					<Link href='/'>
+						<Image src='/logo.svg' alt='logo' width={84} height={57} />
+					</Link>
 
 					<div className='py-5 px-[25px] flex items-center gap-[15px] bg-white rounded-[10px]'>
 						<Image

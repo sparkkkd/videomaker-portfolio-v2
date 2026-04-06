@@ -11,7 +11,7 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ className }: HeroSectionProps) => {
 	return (
-		<section className={twMerge(className, 'mt-[63px] relative')}>
+		<section className={twMerge(className, 'mt-[240px] relative')}>
 			<AnimatedHeroIcons />
 
 			<Container className='overflow-visible'>
