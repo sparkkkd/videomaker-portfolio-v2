@@ -37,10 +37,11 @@ const contentVariants: Variants = {
 	},
 }
 
-const itemVariants = {
+const itemVariants: Variants = {
 	hidden: { opacity: 0, scale: 0.95, filter: 'blur(4px)' },
 	visible: {
 		opacity: 1,
+		origin: 2,
 		scale: 1,
 		filter: 'blur(0px)',
 		transition: { duration: 0.4 },
@@ -56,7 +57,7 @@ export const ProjectTabsAndContent = ({
 	return (
 		<div className={twMerge(className, '')}>
 			<Tabs
-				className='mt-[45px]'
+				className='mt-5 lg:mt-[45px]'
 				tabs={TABS.map(({ id, label }) => ({ id, label }))}
 				activeTabId={activeTabId}
 				onTabChange={setActiveTabId}
@@ -69,7 +70,10 @@ export const ProjectTabsAndContent = ({
 					initial='hidden'
 					animate='visible'
 					exit='exit'
-					className='mt-[80px] grid grid-cols-2 gap-[60px]'
+					className={twMerge(
+						'mt-10 px-[10px] grid grid-cols-1 gap-5',
+						'lg:mt-[80px] lg:px-0 lg:grid-cols-2 lg:gap-[60px]',
+					)}
 				>
 					{activeTab?.projects.map(({ id, label, src }) => (
 						<motion.div
@@ -83,11 +87,19 @@ export const ProjectTabsAndContent = ({
 									alt={label}
 									width={569}
 									height={320}
-									className='rounded-[30px] transition-transform duration-500 group-hover:scale-105'
+									className={twMerge(
+										'rounded-[15px]',
+										'lg:rounded-[30px] lg:transition-transform lg:duration-500 lg:group-hover:scale-105',
+									)}
 									priority={false}
 								/>
 							</div>
-							<h4 className='mt-[20px] text-white text-[32px] leading-none'>
+							<h4
+								className={twMerge(
+									'mt-[10px] text-[14px] text-white leading-none',
+									'lg:mt-5 lg:text-[32px]',
+								)}
+							>
 								{label}
 							</h4>
 						</motion.div>

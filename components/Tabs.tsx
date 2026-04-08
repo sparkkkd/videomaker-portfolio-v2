@@ -19,14 +19,16 @@ export const Tabs = ({
 		<div
 			className={twMerge(
 				className,
-				'mx-auto px-[30px] flex items-center justify-between gap-[25px]',
+				'mx-auto max-w-[228px] flex flex-wrap items-center  gap-[10px] justify-center',
+				'lg:px-[30px] lg:gap-[25px] lg:justify-between lg:max-w-full',
 			)}
 		>
 			{tabs.map(({ label, id }) => (
 				<div
 					key={id}
 					className={twMerge(
-						'py-[15px] px-5 text-white font-semibold text-2xl leading-[90%] border-1 border-[#e0fd35] rounded-[10px] transition-all duration-300 cursor-pointer',
+						'py-[6px] px-[9px] rounded-[4px] text-[10px] text-white font-semibold leading-[90%] border-1 border-[#e0fd35] transition-all duration-300 cursor-pointer',
+						'lg:py-[15px] lg:px-5 lg:text-2xl lg:rounded-[10px]',
 						id === activeTabId ? 'bg-[#E0FD35] text-black' : 'bg-transparent',
 					)}
 					onClick={() => onTabChange(id)}

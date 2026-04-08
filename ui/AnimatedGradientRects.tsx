@@ -4,25 +4,21 @@ import { GradientRect } from './GradientRect'
 
 export const AnimatedGradientRects = () => {
 	return (
-		<>
-			<GradientRect bottom={0} left={0} height={454} zIndex={0} delay={0} />
-			<GradientRect bottom={0} left={109} height={345} zIndex={0} delay={0.1} />
-			<GradientRect bottom={0} left={218} height={278} zIndex={0} delay={0.2} />
-			<GradientRect bottom={0} left={327} height={226} zIndex={0} delay={0.3} />
-			<GradientRect bottom={0} left={436} height={134} zIndex={0} delay={0.4} />
-			<GradientRect bottom={0} left={545} height={80} zIndex={0} delay={0.5} />
-			<GradientRect bottom={0} left={654} height={134} zIndex={0} delay={0.4} />
-			<GradientRect bottom={0} left={763} height={226} zIndex={0} delay={0.3} />
-			<GradientRect bottom={0} left={872} height={278} zIndex={0} delay={0.2} />
-			<GradientRect bottom={0} left={981} height={345} zIndex={0} delay={0.1} />
+		<div className='absolute inset-0 flex items-end gap-0'>
+			<GradientRect delay={0} className='h-[153px] lg:h-[454px]' />
+			<GradientRect delay={0.1} className='h-[116px] lg:h-[345px]' />
+			<GradientRect delay={0.2} className='h-[94px] lg:h-[278px]' />
+			<GradientRect delay={0.3} className='h-[76px] lg:h-[226px]' />
+			<GradientRect delay={0.4} className='h-[45px] lg:h-[134px]' />
+			<GradientRect delay={0.5} className='h-[30px] lg:h-[80px]' />
+			<GradientRect delay={0.4} className='h-[45px] lg:h-[134px]' />
+			<GradientRect delay={0.3} className='h-[76px] lg:h-[226px]' />
+			<GradientRect delay={0.2} className='h-[94px] lg:h-[278px]' />
+			<GradientRect delay={0.1} className='h-[116px] lg:h-[345px]' />
 			<GradientRect
-				bottom={0}
-				right={0}
-				height={454}
-				width={110}
-				zIndex={0}
 				delay={0}
+				className='h-[153px] lg:h-[454px] lg:!w-[110px]'
 			/>
-		</>
+		</div>
 	)
 }

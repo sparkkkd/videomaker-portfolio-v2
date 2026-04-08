@@ -14,16 +14,32 @@ export const Footer = ({ className }: FooterProps) => {
 		<footer
 			className={twMerge(
 				className,
-				'mt-[-76px] pt-[76px] pb-[200px] bg-[#DBFB1B] w-full relative overflow-hidden',
+				'mt-[-5px] pb-[155px] bg-[#DBFB1B] w-full relative overflow-hidden',
+				'lg:mt-[-76px] lg:pt-[76px] lg:pb-[200px]',
 			)}
 		>
 			<Container className='relative z-10'>
-				<div className='mt-[124px] pt-[80px] pb-[108px] w-full flex flex-col items-center bg-[#282828] rounded-[30px]'>
-					<h3 className='max-w-[850px] text-white font-semibold text-center text-[64px] leading-[90%]'>
+				<div
+					className={twMerge(
+						'mt-[50px] py-[30px] w-full flex flex-col items-center bg-[#282828] rounded-[10px]',
+						'lg:mt-[124px] lg:pt-[80px] lg:pb-[108px] lg:rounded-[30px]',
+					)}
+				>
+					<h3
+						className={twMerge(
+							'text-white font-semibold text-[28px] text-center leading-[95%]',
+							'lg:max-w-[850px] lg:text-[64px] lg:leading-[90%]',
+						)}
+					>
 						Давайте создадим ваш следующий проект вместе
 					</h3>
 
-					<span className='mt-5 max-w-[850px] text-center text-[32px] text-white opacity-70 leading-[120%]'>
+					<span
+						className={twMerge(
+							'mt-[10px] text-[14px] text-center text-white opacity-70 leading-none',
+							'lg:mt-5 lg:max-w-[850px] lg:text-[32px] lg:leading-[120%]',
+						)}
+					>
 						Я открыт к сотрудничеству и предложениям о работе. Напишите мне,
 						чтобы обсудить ваши задачи, идеи или возможность присоединиться к
 						вашей команде
@@ -40,7 +56,9 @@ export const Footer = ({ className }: FooterProps) => {
 				width={1955}
 				height={720}
 				alt=''
-				className='absolute bottom-[84px] left-0 pointer-events-none select-none'
+				className={twMerge(
+					'absolute bottom-[84px] left-0 pointer-events-none select-none',
+				)}
 			/>
 		</footer>
 	)
