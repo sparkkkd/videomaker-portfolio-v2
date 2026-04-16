@@ -21,8 +21,12 @@ export const ExperienceSection = () => {
 
 						{/* RIGHT */}
 						<div className='mt-[23px] flex flex-col gap-16'>
-							{experience.map((item) => (
-								<TimelineContent key={item.id} item={item} />
+							{experience.map((item, idx) => (
+								<TimelineContent
+									key={item.id}
+									item={item}
+									isActive={idx === experience.length - 1}
+								/>
 							))}
 						</div>
 					</div>

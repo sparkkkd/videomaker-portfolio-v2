@@ -1,9 +1,8 @@
-import { twMerge } from 'tailwind-merge'
-
+import { AnimatedHeroTitle } from '@/components/Hero/AnimatedHeroTitle'
 import { Container } from '@/components/Container'
-import { HeroAnimatedContent } from '@/components/HeroAnimatedContent'
-import { AnimatedHeroIcons } from '@/ui/AnimatedHeroIcons'
-import { AnimatedGradientRects } from '@/ui/AnimatedGradientRects'
+import { twMerge } from 'tailwind-merge'
+import { AnimatedHeroIcons } from '@/components/Hero/AnimatedHeroIcons'
+import { AnimatedHeroContent } from '@/components/Hero/AnimatedHeroContent'
 
 interface HeroSectionProps {
 	className?: string
@@ -12,27 +11,29 @@ interface HeroSectionProps {
 export const HeroSection = ({ className }: HeroSectionProps) => {
 	return (
 		<section
-			className={twMerge(className, 'relative mt-[130px]', 'lg:mt-[240px]')}
+			className={twMerge(
+				className,
+				'pt-[100px] pb-[90px] bg-[#1C1C1C] rounded-b-[25px]',
+				'lg:pt-[180px]',
+			)}
 		>
-			<Container className='overflow-visible relative'>
-				<AnimatedHeroIcons />
-
-				<div>
-					<div
-						className={twMerge(
-							'pt-[20px] pb-[50px] px-[20px] relative bg-black text-white rounded-[10px] overflow-hidden',
-							'lg:py-[86px] lg:px-[68px] lg:rounded-[30px]',
-						)}
-					>
-						{/* Title for SEO */}
-						<h1 className='text-[88px] text-center font-medium leading-[95%] hidden'>
-							Оживляю смыслы через кадр, анимацию и визуальный ИИ
-						</h1>
-
-						<HeroAnimatedContent />
-						<AnimatedGradientRects />
-					</div>
+			<Container>
+				<div
+					className={twMerge(
+						'mx-auto relative max-w-[260px]',
+						'md:max-w-[500px]',
+						'lg:max-w-full',
+					)}
+				>
+					<h1 className='sr-only'>Оживляю идеи через видео, анимацию и ии</h1>
+					<AnimatedHeroTitle
+						text='Оживляю идеи через видео, анимацию и ии'
+						className='relative'
+					/>
+					<AnimatedHeroIcons />
 				</div>
+
+				<AnimatedHeroContent />
 			</Container>
 		</section>
 	)

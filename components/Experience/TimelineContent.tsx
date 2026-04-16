@@ -1,12 +1,16 @@
 import { ExperienceItem } from './experience.data'
+import { TimelineDot } from './TimeLineDot'
 
 interface Props {
 	item: ExperienceItem
+	isActive: boolean
 }
 
-export const TimelineContent = ({ item }: Props) => {
+export const TimelineContent = ({ item, isActive }: Props) => {
 	return (
-		<div className='flex gap-[106px]'>
+		<div className='relative flex gap-[106px]'>
+			<TimelineDot isActive={isActive} />
+
 			<span className='max-w-[128px] text-[21px] opacity-70 font-medium'>
 				{item.period}
 			</span>

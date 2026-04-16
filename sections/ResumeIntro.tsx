@@ -11,7 +11,8 @@ export const ResumeIntro = ({ className }: ResumeIntroProps) => {
 		<section
 			className={twMerge(
 				className,
-				'pt-[240px] pb-[145px] text-[86px] font-semibold bg-[#D6FA03]',
+				'pt-[115px] overflow-hidden',
+				'lg:pt-[240px] pb-[145px] text-[86px] font-semibold bg-[#D6FA03]',
 			)}
 		>
 			<h2 className='hidden'>
