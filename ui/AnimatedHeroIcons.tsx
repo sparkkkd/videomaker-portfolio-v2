@@ -46,7 +46,6 @@ const HERO_ICONS = [
 	},
 ]
 
-// Отдельный компонент для каждой иконки
 const AnimatedIcon = ({
 	src,
 	alt,

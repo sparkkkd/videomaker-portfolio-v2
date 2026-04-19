@@ -6,10 +6,10 @@ export type NavigationT = {
 export const NAVIGATIONS: NavigationT[] = [
 	{
 		title: 'Портфолио',
-		href: '#',
+		href: '/',
 	},
 	{
 		title: 'Резюме',
-		href: '#',
+		href: '/resume',
 	},
 ]

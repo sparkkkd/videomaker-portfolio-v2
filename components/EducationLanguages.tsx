@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 interface LanguageGaugeProps {
 	language: string
 	level: string
-	progress: number // 0-100, процент заполнения
+	progress: number
 	className?: string
 }
 
@@ -15,18 +15,15 @@ export const LanguageGauge = ({
 	progress,
 }: LanguageGaugeProps) => {
 	const radius = 50
-	const circumference = Math.PI * radius // Длина половины окружности
+	const circumference = Math.PI * radius
 	const strokeDashoffset = circumference - (progress / 100) * circumference
 
 	return (
 		<div className={`flex flex-col items-center ${className}`}>
-			{/* Название языка */}
 			<span className='mt-10 text-2xl font-medium mb-[10px]'>{language}</span>
 
-			{/* SVG полукруг */}
 			<div className='relative w-[160px] h-[80px]'>
 				<svg viewBox='0 0 120 60' className='w-full h-full'>
-					{/* Фоновый полукруг (белый) */}
 					<path
 						d='M 10 60 A 50 50 0 0 1 110 60'
 						fill='none'
@@ -35,7 +32,6 @@ export const LanguageGauge = ({
 						strokeLinecap='round'
 					/>
 
-					{/* Прогресс полукруга (чёрный) */}
 					<path
 						d='M 10 60 A 50 50 0 0 1 110 60'
 						fill='none'
@@ -48,7 +44,6 @@ export const LanguageGauge = ({
 					/>
 				</svg>
 
-				{/* Уровень по центру */}
 				<div className='absolute bottom-[-20px] left-1/2 -translate-x-1/2'>
 					<span className='text-[48px] font-bold'>{level}</span>
 				</div>

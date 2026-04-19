@@ -1,6 +1,7 @@
-import { AnimatedHeroTitle } from '@/components/Hero/AnimatedHeroTitle'
-import { Container } from '@/components/Container'
 import { twMerge } from 'tailwind-merge'
+
+import { Container } from '@/components/Container'
+import { AnimatedHeroTitle } from '@/components/Hero/AnimatedHeroTitle'
 import { AnimatedHeroIcons } from '@/components/Hero/AnimatedHeroIcons'
 import { AnimatedHeroContent } from '@/components/Hero/AnimatedHeroContent'
 
@@ -13,8 +14,9 @@ export const HeroSection = ({ className }: HeroSectionProps) => {
 		<section
 			className={twMerge(
 				className,
-				'pt-[100px] pb-[90px] bg-[#1C1C1C] rounded-b-[25px]',
-				'lg:pt-[180px]',
+				'pt-[110px] pb-[90px] bg-[#1C1C1C] rounded-b-[25px]',
+				'md:pt-[120px] md:rounded-b-[70px]',
+				'lg:pt-[200px]',
 			)}
 		>
 			<Container>

@@ -39,9 +39,7 @@ const ICONS: IconConfig[] = [
 	},
 ]
 
-// Отдельный компонент для одной иконки (чистая функция, без хуков)
 const AnimatedIcon = ({ icon }: { icon: IconConfig }) => (
-	// 1️⃣ Внешняя обёртка: появление (fadeInUp)
 	<motion.div
 		className={icon.className}
 		initial={{ opacity: 0, y: 30 }}
@@ -52,14 +50,12 @@ const AnimatedIcon = ({ icon }: { icon: IconConfig }) => (
 			delay: icon.entranceDelay,
 		}}
 	>
-		{/* 2️⃣ Внутренняя обёртка: бесконечная левитация */}
 		<motion.div
 			animate={{ y: [0, -icon.floatAmplitude, 0] }}
 			transition={{
 				duration: icon.floatDuration,
 				ease: 'easeInOut',
 				repeat: Infinity,
-				// Задержка старта левитации = задержка появления + длительность появления (0.6с)
 				delay: icon.entranceDelay + 0.6,
 			}}
 			style={{ willChange: 'transform' }}

@@ -1,4 +1,3 @@
-// components/Hero/AnimatedHeroContent.tsx
 'use client'
 
 import { motion, Variants } from 'framer-motion'
@@ -9,7 +8,6 @@ interface AnimatedHeroContentProps {
 	className?: string
 }
 
-// Варианты анимации для текста
 const textVariants: Variants = {
 	hidden: { opacity: 0, y: 30 },
 	visible: {
@@ -18,12 +16,11 @@ const textVariants: Variants = {
 		transition: {
 			duration: 0.6,
 			ease: 'easeOut',
-			delay: 1, // Начинаем после заголовка
+			delay: 1,
 		},
 	},
 }
 
-// Варианты анимации для кнопки
 const buttonVariants: Variants = {
 	hidden: { opacity: 0, y: 30 },
 	visible: {
@@ -32,7 +29,7 @@ const buttonVariants: Variants = {
 		transition: {
 			duration: 0.6,
 			ease: 'easeOut',
-			delay: 1.4, // Чуть позже текста
+			delay: 1.4,
 		},
 	},
 }
@@ -49,7 +46,6 @@ export const AnimatedHeroContent = ({
 				className,
 			)}
 		>
-			{/* Текст с анимацией */}
 			<motion.p
 				className={twMerge(
 					'text-[18px] text-center text-white leading-[120%]',
@@ -64,7 +60,6 @@ export const AnimatedHeroContent = ({
 				коммерческие видеопроекты
 			</motion.p>
 
-			{/* Кнопка с анимацией */}
 			<motion.div
 				className='lg:basis-[35%] xl:basis-[40%]'
 				variants={buttonVariants}

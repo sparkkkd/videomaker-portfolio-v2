@@ -1,10 +1,9 @@
-// constants/contacts.constant.ts
 interface IContact {
 	id: string
 	title: string
-	label: string // То, что видит пользователь
-	href: string // Валидный URL для Link/anchor
-	external?: boolean // Флаг для открытия в новой вкладке
+	label: string
+	href: string
+	external?: boolean
 }
 
 export const CONTACTS: IContact[] = [
