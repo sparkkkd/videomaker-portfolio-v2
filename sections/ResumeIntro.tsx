@@ -1,8 +1,13 @@
-import { Container } from '@/components/Container'
-import { Button } from '@/components/ui/Button'
-import { Tag } from '@/components/ui/Tag'
-import Image from 'next/image'
+'use client'
+
 import { twMerge } from 'tailwind-merge'
+
+import { Container } from '@/components/Container'
+import { AnimatedIntroText } from '@/components/ResumeIntro/AnimatedIntroText'
+import { AnimatedTitle } from '@/components/ResumeIntro/AnimatedIntroTitle'
+import { AnimatedIntroTags } from '@/components/ResumeIntro/AnimatedIntroTags'
+import { AnimatedIntroButtons } from '@/components/ResumeIntro/AnimatedIntroButtons'
+import { AnimatedIntroIcons } from '@/components/ResumeIntro/AnimatedIntroIcons'
 
 interface ResumeIntroProps {
 	className?: string
@@ -18,62 +23,32 @@ export const ResumeIntro = ({ className }: ResumeIntroProps) => {
 				'lg:pt-[200px]',
 			)}
 		>
-			<Container>
-				<div className='flex items-center justify-center gap-[5px]'>
-					<Image
-						src='/avatar.png'
-						alt='Дмитрий'
-						width={24}
-						height={24}
-						className='rounded-full'
-					/>
-					<p className='text-[clamp(10px,calc(1.09vw_+_6.5px),24px)] text-black/60 font-semibold'>
-						Привет! Меня зовут Дмитрий Кузьмин и я
-					</p>
-				</div>
+			<h1 className='sr-only'>Видеомонтажер, моушен и графический дизайнер-</h1>
 
-				<div
-					className={twMerge(
-						'mx-auto mt-[15px] relative flex items-center justify-center',
-						'lg:mt-[30px]',
-					)}
-				>
-					<h1
-						className='font-druk text-[56px] leading-[96%] text-secondary uppercase text-center relative'
-						style={{ fontSize: 'clamp(56px, calc(9.6vw + 25px), 179px)' }}
+			<div className='w-full relative overflow-hidden'>
+				<Container>
+					<AnimatedIntroText />
+
+					<div
+						className={twMerge(
+							'mx-auto mt-[15px] relative flex items-center justify-center',
+							'lg:mt-[30px]',
+						)}
 					>
-						<div>Видеомонтажер,</div>
-						<div>моушен- И ГРАФ-</div>
-						<div>ДИЗАЙНЕР</div>
-						<Tag
-							className='absolute left-[5%] top-[-2%]'
-							label='Проектное сотрудничество'
-						/>
-						<Tag
-							className='absolute right-[14%] top-[30%]'
-							label='Удаленная работа'
-						/>
-						<Tag
-							className='absolute left-[26%] bottom-[26%] rotate-[-2deg]'
-							label='г. Рязань'
-						/>
-					</h1>
-				</div>
+						<div className='relative'>
+							<AnimatedTitle
+								lines={['Видеомонтажер,', 'моушен- И ГРАФ-', 'ДИЗАЙНЕР']}
+								className='text-center'
+							/>
+							<AnimatedIntroTags />
+						</div>
+					</div>
 
-				<div
-					className={twMerge(
-						'px-[18px] mt-8',
-						'md:flex md:gap-[30px] md:mt-[55px]',
-					)}
-				>
-					<Button className='!text-primary' variant='black'>
-						Связаться со мной
-					</Button>
-					<Button className={twMerge('mt-[15px]', 'md:mt-0')} outline>
-						Скачать PDF-резюме
-					</Button>
-				</div>
-			</Container>
+					<AnimatedIntroButtons />
+				</Container>
+
+				<AnimatedIntroIcons />
+			</div>
 		</section>
 	)
 }

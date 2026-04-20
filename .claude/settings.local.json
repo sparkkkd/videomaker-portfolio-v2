@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir public:*)"
+      "Bash(dir public:*)",
+      "Bash(dir:*)"
     ]
   }
 }
