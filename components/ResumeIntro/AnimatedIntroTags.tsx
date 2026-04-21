@@ -30,7 +30,7 @@ export const AnimatedIntroTags = ({ className }: AnimatedIntroTagsProps) => {
 	return (
 		<div className={className}>
 			{TAGS.map((tag, index) => {
-				const baseDelay = 0.2 + index * 0.3
+				const baseDelay = 0.9 + index * 0.3
 				const labelDelay = baseDelay + SCALE_DURATION * 0.6
 
 				return (

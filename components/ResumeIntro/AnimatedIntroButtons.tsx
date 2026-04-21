@@ -20,7 +20,7 @@ export const AnimatedIntroButtons = ({
 			)}
 			initial='initial'
 			animate='animate'
-			variants={fadeInUpBlur(0.6, 5, 0.6)}
+			variants={fadeInUpBlur(0.6, 5, 1)}
 		>
 			<Button className='!text-primary' variant='black'>
 				Связаться со мной

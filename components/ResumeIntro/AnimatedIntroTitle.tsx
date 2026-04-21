@@ -29,7 +29,7 @@ export const AnimatedTitle = ({
 				animate: {
 					transition: {
 						staggerChildren: 0.15,
-						delayChildren: 0.2,
+						delayChildren: 0.8,
 					},
 				},
 			}}

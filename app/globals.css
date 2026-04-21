@@ -16,9 +16,30 @@
   --color-accent: #ff6b00;
 }
 
-/* body {
-  font-family: var(--font-sans)
-} */
+::view-transition-new(root), 
+::view-transition-new(root) {
+  animation: none !important;
+}
+
+::view-transition-group(root) {
+  z-index: auto !important;
+}
+
+::view-transition-image-pair(root) {
+  isolation: isolate;
+  will-change: opacity, transform, clip-path;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 10000;
+  animation: none !important;
+}
+
+::view-transition-old(root) {
+  z-index: 10000;
+  animation: none !important;
+}
 
 button {
   cursor: pointer;

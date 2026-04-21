@@ -4,6 +4,7 @@ import { Inter_Tight } from 'next/font/google'
 
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { ViewTransitions } from 'next-view-transitions'
 
 import './globals.css'
 
@@ -37,19 +38,21 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<html
-			lang='ru'
-			className={`
+		<ViewTransitions>
+			<html
+				lang='ru'
+				className={`
 				${interTight.variable}
 				${drukFont.variable}
 				h-full antialiased`}
-		>
-			<body className='min-h-full flex flex-col font-sans bg-[#fff]'>
-				<Header />
-				{children}
+			>
+				<body className='min-h-full flex flex-col font-sans bg-[#fff]'>
+					<Header />
+					{children}
 
-				<Footer />
-			</body>
-		</html>
+					<Footer />
+				</body>
+			</html>
+		</ViewTransitions>
 	)
 }

@@ -27,7 +27,9 @@ export const HeroSection = ({ className }: HeroSectionProps) => {
 						'lg:max-w-full',
 					)}
 				>
-					<h1 className='sr-only'>Оживляю идеи через видео, анимацию и ии</h1>
+					<h1 className='sr-only' tabIndex={-1}>
+						Оживляю идеи через видео, анимацию и ии
+					</h1>
 					<AnimatedHeroTitle
 						text='Оживляю идеи через видео, анимацию и ии'
 						className='relative'

@@ -23,11 +23,13 @@ export const ResumeIntro = ({ className }: ResumeIntroProps) => {
 				'lg:pt-[200px]',
 			)}
 		>
-			<h1 className='sr-only'>Видеомонтажер, моушен и графический дизайнер-</h1>
+			<h1 className='sr-only' tabIndex={-1}>
+				Видеомонтажер, моушен и графический дизайнер-
+			</h1>
 
 			<div className='w-full relative overflow-hidden'>
 				<Container>
-					<AnimatedIntroText />
+					<AnimatedIntroText delay={0.8} />
 
 					<div
 						className={twMerge(

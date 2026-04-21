@@ -1,11 +1,8 @@
 import { twMerge } from 'tailwind-merge'
 
-import Image from 'next/image'
-
 import { Container } from './Container'
 import { Navigation } from './Navigation'
 import { HeaderBackground } from './HeaderBackground'
-import Link from 'next/link'
 
 interface HeaderProps {
 	className?: string
@@ -30,15 +27,6 @@ export const Header = ({ className }: HeaderProps) => {
 						'lg:py-[25px] lg:px-[40px]',
 					)}
 				>
-					<Link href='/'>
-						<Image
-							src='/logo.svg'
-							alt='Dmitry Kuzmin'
-							width={55}
-							height={37}
-							className='lg:w-[84px] lg:h-[57px]'
-						/>
-					</Link>
 					<Navigation />
 				</div>
 			</Container>
