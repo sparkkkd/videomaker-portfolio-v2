@@ -1,6 +1,7 @@
 export interface ExperienceItem {
 	id: string
-	period: string
+	periodStart: string
+	periodEnd: string
 	title: string
 	company: string
 	description: string[]
@@ -9,7 +10,8 @@ export interface ExperienceItem {
 export const experience: ExperienceItem[] = [
 	{
 		id: 'exp_designer_1',
-		period: '11.2020 — 02.2021',
+		periodStart: '11.2020',
+		periodEnd: '02.2021',
 		title: 'Дизайнер',
 		company: 'Юридическая компания «Наше Право»',
 		description: [
@@ -20,7 +22,8 @@ export const experience: ExperienceItem[] = [
 	},
 	{
 		id: 'exp_designer_2',
-		period: '03.2021 — 12.2022',
+		periodStart: '03.2021',
+		periodEnd: '12.2022',
 		title: 'Дизайнер',
 		company: 'Фриланс',
 		description: [
@@ -31,7 +34,8 @@ export const experience: ExperienceItem[] = [
 	},
 	{
 		id: 'exp_designer_montage',
-		period: '12.2022 — 12.2023',
+		periodStart: '12.2022',
+		periodEnd: '12.2023',
 		title: 'Дизайнер/монтажер',
 		company: 'IT-компания «Altcraft»',
 		description: [
@@ -43,7 +47,8 @@ export const experience: ExperienceItem[] = [
 	},
 	{
 		id: 'exp_montage_1',
-		period: '12.2023 — 12.2024',
+		periodStart: '12.2023',
+		periodEnd: '12.2024',
 		title: 'Монтажер',
 		company: 'Фриланс',
 		description: [
@@ -54,7 +59,8 @@ export const experience: ExperienceItem[] = [
 	},
 	{
 		id: 'exp_montage_2',
-		period: '12.2024 — 03.2025',
+		periodStart: '12.2024',
+		periodEnd: '03.2025',
 		title: 'Монтажер',
 		company: 'Студия подкастов Estudio',
 		description: [
@@ -64,7 +70,8 @@ export const experience: ExperienceItem[] = [
 	},
 	{
 		id: 'exp_montage_designer_2',
-		period: '03.2025 — наст. время',
+		periodStart: '03.2025',
+		periodEnd: 'наст. время',
 		title: 'Монтажер/дизайнер',
 		company: 'IT-компания «Loginom»',
 		description: [

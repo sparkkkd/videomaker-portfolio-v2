@@ -10,7 +10,10 @@
 @theme {
   --font-sans: "Inter Tight", sans-serif;
   --font-druk: "Druk", sans-serif;
-  --breakpoint-xl: 87.5rem;
+ 
+  --breakpoint-xl: 87.5rem; /* 1404px */
+  --breakpoint-sm-custom: 29.375rem; /* 470px */
+  
   --color-primary: #e0fd35;
   --color-secondary: #1c1c1c;
   --color-accent: #ff6b00;

@@ -1,6 +1,7 @@
 export interface ISkill {
 	id: string
 	title: string
+	titleBreak?: string
 	answers: {
 		id: string
 		text: string
@@ -28,7 +29,8 @@ export const SKILLS_DATA: ISkill[] = [
 	},
 	{
 		id: 'accordion_2',
-		title: 'Режиссура и разработка концепций',
+		title: 'Видео-монтаж',
+		titleBreak: 'и пост-продакшн',
 		answers: [
 			{
 				id: 'answer_2_1',
@@ -46,7 +48,7 @@ export const SKILLS_DATA: ISkill[] = [
 	},
 	{
 		id: 'accordion_3',
-		title: 'Режиссура и разработка концепций',
+		title: 'Motion Design',
 		answers: [
 			{
 				id: 'answer_3_1',
@@ -64,7 +66,7 @@ export const SKILLS_DATA: ISkill[] = [
 	},
 	{
 		id: 'accordion_4',
-		title: 'Режиссура и разработка концепций',
+		title: 'Графический дизайн',
 		answers: [
 			{
 				id: 'answer_4_1',

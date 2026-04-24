@@ -10,7 +10,7 @@ interface SkillsAccordionProps {
 
 export const SkillsAccordion = ({ className }: SkillsAccordionProps) => {
 	return (
-		<div className={twMerge(className, 'flex flex-col gap-[20px]')}>
+		<div className={twMerge(className, 'flex flex-col gap-[10px]', 'xl:gap-5')}>
 			{SKILLS_DATA.map((item) => (
 				<AccodionItem key={item.id} {...item} />
 			))}
@@ -18,32 +18,64 @@ export const SkillsAccordion = ({ className }: SkillsAccordionProps) => {
 	)
 }
 
-const AccodionItem = ({ answers, title }: ISkill) => {
+const AccodionItem = ({ answers, title, titleBreak }: ISkill) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 
 	return (
 		<div
-			className='py-[25px] px-[35px] flex flex-col bg-[#fff] rounded-[20px] cursor-pointer relative'
+			className={twMerge(
+				'py-[15px] pl-5 pr-[35px] flex flex-col bg-[#fff] rounded-[10px] cursor-pointer relative',
+				'lg:py-[20px]',
+				'xl:py-[25px] xl:px-[35px] xl:rounded-[20px]',
+			)}
 			onClick={() => setIsOpen((prev) => !prev)}
 		>
 			<div className='relative w-full'>
-				<h4 className='font-semibold text-[32px] leading-[120%]'>{title}</h4>
+				<h4
+					className={twMerge(
+						'text-sm font-semibold leading-[120%]',
+						'md:text-[19px]',
+						'lg:text-2xl',
+						'xl:text-[32px]',
+					)}
+				>
+					{title}
+
+					<br className='hidden xl:block' />
+
+					<span className='hidden xl:inline'>{titleBreak}</span>
+
+					<span className='xl:hidden'>{titleBreak && ` ${titleBreak}`}</span>
+				</h4>
 				<div
 					className={twMerge(
-						'w-[35px] h-[35px] absolute right-[35px] top-1/2 -translate-y-1/2 transition-all duration-300',
+						'w-[15px] h-[15px] absolute top-1/2 right-[-15px] -translate-y-1/2 transition-all duration-300',
+						'md:w-[20px] md:h-[20px]',
+						'lg:w-[27px] lg:h-[27px]',
+						'xl:w-[35px] xl:h-[35px]',
 						isOpen && 'rotate-45',
 					)}
 				>
-					<span className='w-[4px] h-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-black'></span>
-					<span className='w-full h-[4px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-black'></span>
+					<span
+						className={twMerge(
+							'w-[2px] h-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-black',
+							'lg:w-[3px]',
+						)}
+					></span>
+					<span
+						className={twMerge(
+							'w-full h-[2px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-black',
+							'lg:h-[3px]',
+						)}
+					></span>
 				</div>
 			</div>
 
-			<div className='max-w-[409px]'>
+			<div className={twMerge('max-w-full', 'xl:max-w-[409px]')}>
 				<AnimatePresence mode='wait'>
 					{isOpen && (
 						<motion.div
-							className='flex flex-col gap-[10px] text-[20px] leading-[130%] opacity-70 overflow-hidden'
+							className='overflow-hidden'
 							initial='collapsed'
 							animate='open'
 							exit='collapsed'
@@ -60,9 +92,23 @@ const AccodionItem = ({ answers, title }: ISkill) => {
 								},
 							}}
 						>
-							<div className='pt-5 flex flex-col gap-[10px]'>
+							<div
+								className={twMerge(
+									'pt-[10px] flex flex-col gap-[10px]',
+									'md:pt-5',
+								)}
+							>
 								{answers.map((answer) => (
-									<p key={answer.id}>{answer.text}</p>
+									<p
+										className={twMerge(
+											'text-[10px] leading-[130%] opacity-70',
+											'md:text-[14px]',
+											'lg:text-[20px]',
+										)}
+										key={answer.id}
+									>
+										{answer.text}
+									</p>
 								))}
 							</div>
 						</motion.div>

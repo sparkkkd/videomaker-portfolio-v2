@@ -10,16 +10,28 @@ interface WorkflowProps {
 export const Workflow = ({ className }: WorkflowProps) => {
 	return (
 		<div className={twMerge(className, '')}>
-			<h3 className='font-semibold text-center text-[64px] leading-[90%]'>
+			<h3
+				className={twMerge(
+					'font-semibold text-center text-2xl leading-[90%]',
+					'md:text-[42px]',
+					'lg:text-[64px]',
+				)}
+			>
 				Мой инструментарий
 			</h3>
 
-			<div className='mt-10 grid grid-cols-2 gap-5'>
+			<div
+				className={twMerge(
+					'mt-5 grid grid-cols-1 gap-[10px]',
+					'md:gap-4',
+					'lg:mt-[50px] lg:grid-cols-2 lg:gap-5',
+				)}
+			>
 				{WORKFLOW.map((item) => {
 					if (item.isAI) {
 						return (
 							<AIWorkflowCard
-								className='row-span-2'
+								className='row-span-2 order-last lg:order-none'
 								workflow={item}
 								key={item.id}
 							/>

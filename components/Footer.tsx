@@ -21,8 +21,8 @@ export const Footer = ({ className }: FooterProps) => {
 			<Container className='relative z-10'>
 				<div
 					className={twMerge(
-						'mt-[50px] py-[30px] w-full flex flex-col items-center bg-[#282828] rounded-[10px]',
-						'lg:mt-[124px] lg:pt-[80px] lg:pb-[108px] lg:rounded-[30px]',
+						'mt-[50px] py-[30px] px-5 w-full flex flex-col items-center bg-[#282828] rounded-[10px]',
+						'lg:mt-[124px] lg:px-0 lg:pt-[80px] lg:pb-[108px] lg:rounded-[30px]',
 					)}
 				>
 					<h3
