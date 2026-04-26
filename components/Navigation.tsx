@@ -1,12 +1,18 @@
 'use client'
 
 import { twMerge } from 'tailwind-merge'
+import { usePathname } from 'next/navigation'
 import { useTransitionRouter } from 'next-view-transitions'
+
 import Link from 'next/link'
 import Image from 'next/image'
 
 import { NAVIGATIONS, type NavigationT } from '@/constants/navigation.constant'
 import { slideInOut } from '@/constants/animation.constant'
+
+import { Burger } from './ui/Burger'
+import { useEffect, useState } from 'react'
+import { MobileMenu } from './MobileMenu'
 
 interface NavigationProps {
 	className?: string
@@ -14,12 +20,31 @@ interface NavigationProps {
 
 export const Navigation = ({ className }: NavigationProps) => {
 	const router = useTransitionRouter()
+	const pathname = usePathname()
+	const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+
+	useEffect(() => {
+		if (isMenuOpen) {
+			document.body.style.overflow = 'hidden'
+		} else {
+			document.body.style.overflow = ''
+		}
+		return () => {
+			document.body.style.overflow = ''
+		}
+	}, [isMenuOpen])
+
+	useEffect(() => {
+		setIsMenuOpen(false)
+	}, [pathname])
 
 	return (
 		<>
 			<Link
 				href='/'
 				onClick={(e) => {
+					if (pathname === '/') return
+
 					try {
 						e.preventDefault()
 						router.push('/', {
@@ -38,7 +63,9 @@ export const Navigation = ({ className }: NavigationProps) => {
 					className='lg:w-[84px] lg:h-[57px]'
 				/>
 			</Link>
-			<nav className={twMerge(className)}>
+			<Burger className='md:hidden' onClick={() => setIsMenuOpen(true)} />
+
+			<nav className={twMerge(className, 'hidden md:flex')}>
 				<ul className='text-white flex items-center lg:gap-[50px] md:gap-[30px]'>
 					{NAVIGATIONS.map((item) => (
 						<NavigationItem
@@ -60,6 +87,12 @@ export const Navigation = ({ className }: NavigationProps) => {
 					</li>
 				</ul>
 			</nav>
+
+			<MobileMenu
+				isOpen={isMenuOpen}
+				onClose={() => setIsMenuOpen(false)}
+				// onNavigate={handleNavigationClick}
+			/>
 		</>
 	)
 }
@@ -72,6 +105,7 @@ const NavigationItem = ({
 	className?: string
 }) => {
 	const router = useTransitionRouter()
+	const pathname = usePathname()
 
 	return (
 		<li className={twMerge(className)}>
@@ -79,6 +113,8 @@ const NavigationItem = ({
 				href={item.href}
 				className='lg:text-2xl'
 				onClick={(e) => {
+					if (pathname === item.href) return
+
 					try {
 						e.preventDefault()
 						router.push(item.href, {

@@ -34,8 +34,8 @@ export const EducationCard = ({ className, education }: EducationCardProps) => {
 					className={twMerge(
 						'text-[14px] font-semibold leading-[125%]',
 						'md:text-[19px]',
-						'lg:text-[32px]',
-						'xl:mb-[10px]',
+						'lg:text-[33px]',
+						'xl:mb-[10px] xl:text-[29px]',
 					)}
 				>
 					{education.title}

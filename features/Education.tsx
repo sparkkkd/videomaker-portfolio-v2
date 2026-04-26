@@ -32,7 +32,7 @@ export const Education = ({ className }: EducationProps) => {
 					'mt-[25px] flex flex-col w-fit mx-auto',
 					'md:mx-0 md:mt-10 md:w-full',
 					'lg:mt-[50px]',
-					'xl:flex-row xl:gap-[80px]',
+					'xl:flex-row xl:gap-[0px]',
 				)}
 			>
 				<div
@@ -40,6 +40,7 @@ export const Education = ({ className }: EducationProps) => {
 						'grid grid-cols-2 gap-y-[20px] gap-x-[33px]',
 						'lg:gap-y-[30px]',
 						'lg:gap-x-0',
+						'xl:w-[630px]',
 					)}
 				>
 					{EDUCATIONS.map((item, index) => (
@@ -57,7 +58,7 @@ export const Education = ({ className }: EducationProps) => {
 				</div>
 
 				<EducationLanguages
-					className={twMerge('mt-5 w-full', 'md:mt-10', 'xl:w-fit')}
+					className={twMerge('mt-5 w-full', 'md:mt-10', 'xl:w-fit xl:ml-auto')}
 				/>
 			</div>
 		</div>

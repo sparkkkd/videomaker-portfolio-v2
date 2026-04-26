@@ -13,8 +13,9 @@ export const Header = ({ className }: HeaderProps) => {
 		<header
 			className={twMerge(
 				className,
-				'absolute w-full top-[25px]',
+				'px-[20px] w-full absolute top-[25px]',
 				'lg:top-[50px]',
+				'xl:px-0',
 			)}
 		>
 			<Container className='relative'>
