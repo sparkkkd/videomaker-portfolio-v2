@@ -101,14 +101,14 @@ export const EducationLanguages = ({ className }: EducationLanguagesProps) => {
 			</div>
 
 			<Image
-				src='/education-card-bg.png'
+				src='/education-card-bg.svg'
 				alt=''
 				width={635}
 				height={396}
 				className={twMerge(
 					'w-full absolute right-0 bottom-[-50px]',
-					'md:w-[385px] md:h-[246px] md:bottom-[-85px] md:left-1/2 md:-translate-x-1/2',
-					'lg:w-[635px] lg:h-[396px] md:bottom-[-128px]',
+					'md:w-[385px] md:h-[246px] md:bottom-[-80px] md:left-1/2 md:-translate-x-1/2',
+					'lg:w-[635px] lg:h-[396px] lg:bottom-[-142px]',
 					'xl:w-[327px] xl:h-[229px] xl:bottom-[-60px] xl:right-[-10px] xl:left-auto xl:-translate-x-0',
 				)}
 			/>

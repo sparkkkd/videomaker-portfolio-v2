@@ -80,7 +80,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 						/>
 
 						<motion.div
-							className='px-5 py-[25px] fixed top-[15px] right-0 h-[90%] w-full bg-[#CDFA03] rounded-[15px] z-[9999] overflow-scroll md:hidden'
+							className='px-5 py-[25px] fixed  h-full w-full bg-[#CDFA03] z-[9999] overflow-scroll md:hidden'
 							variants={menuVariants}
 							initial='closed'
 							animate='open'
