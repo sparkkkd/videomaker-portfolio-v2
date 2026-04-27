@@ -61,7 +61,6 @@ export const ExperienceSection = () => {
 									<TimelineContent
 										key={item.id}
 										item={item}
-										index={index}
 										isActive={index === experience.length - 1}
 									/>
 								))}
