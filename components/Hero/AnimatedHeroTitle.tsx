@@ -18,8 +18,8 @@ export const AnimatedHeroTitle = ({ text, className }: AnimatedTitleProps) => {
 				'flex flex-wrap justify-center items-start gap-x-[5px]',
 				'text-[56px] text-white font-druk text-center leading-[96%] uppercase',
 				'md:text-[72px] md:gap-x-[10px]',
-				'lg:text-[136px] lg:gap-x-[15px]',
-				'xl:text-[179px] xl:gap-x-[19px]',
+				'lg:max-w-[854px] lg:mx-auto lg:text-[136px] lg:gap-x-[15px]',
+				'xl:max-w-full xl:text-[179px] xl:gap-x-[19px]',
 				className,
 			)}
 			initial='hidden'

@@ -30,11 +30,10 @@ export const HeroSection = ({ className }: HeroSectionProps) => {
 					<h1 className='sr-only' tabIndex={-1}>
 						Оживляю идеи через видео, анимацию и ии
 					</h1>
-					<AnimatedHeroTitle
-						text='Оживляю идеи через видео, анимацию и ии'
-						className='relative'
-					/>
-					<AnimatedHeroIcons />
+					<div className='relative max-w-fit w-fit mx-auto'>
+						<AnimatedHeroTitle text='Оживляю идеи через видео, анимацию и ии' />
+						<AnimatedHeroIcons />
+					</div>
 				</div>
 
 				<AnimatedHeroContent />
