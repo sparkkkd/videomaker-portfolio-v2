@@ -9,11 +9,11 @@ interface ProjectSectionProps {
 
 export const ProjectSection = ({ className }: ProjectSectionProps) => {
 	return (
-		<section className={twMerge(className, 'relative z-10')}>
+		<section className={twMerge(className, 'relative z-20')}>
 			<div
 				className={twMerge(
-					'mt-[90px] pt-[30px] pb-[40px] bg-[#1C1C1C] rounded-[10px]',
-					'lg:mt-[128px] lg:pt-[105px] lg:pb-[100px] lg:rounded-[80px]',
+					' pt-[30px] pb-[40px] bg-[#1C1C1C] rounded-[10px]',
+					' lg:pt-[105px] lg:pb-[100px] lg:rounded-[80px]',
 				)}
 			>
 				<Container>

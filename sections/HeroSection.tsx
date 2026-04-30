@@ -14,9 +14,9 @@ export const HeroSection = ({ className }: HeroSectionProps) => {
 		<section
 			className={twMerge(
 				className,
-				'pt-[110px] pb-[90px] bg-[#1C1C1C] rounded-b-[25px]',
-				'md:pt-[120px] md:rounded-b-[70px]',
-				'lg:pt-[200px]',
+				'pt-[110px] pb-[70px] bg-[#1C1C1C] rounded-b-[25px]',
+				'md:pt-[120px] md:pb-[140px] md:rounded-b-[70px]',
+				'lg:pt-[200px] lg:pb-[150px]',
 			)}
 		>
 			<Container>

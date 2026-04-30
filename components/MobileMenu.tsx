@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 import { CONTACTS } from '@/constants/contacts.constant'
 import { NAVIGATIONS } from '@/constants/navigation.constant'
-import { useEffect, useState } from 'react'
+import { startTransition, useEffect, useState } from 'react'
 
 interface MobileMenuProps {
 	isOpen: boolean
@@ -68,7 +68,7 @@ const itemVariants: Variants = {
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 	const [mounted, setMounted] = useState<boolean>(false)
 
-	useEffect(() => setMounted(true), [])
+	useEffect(() => startTransition(() => setMounted(true)), [])
 
 	if (!mounted) return null
 

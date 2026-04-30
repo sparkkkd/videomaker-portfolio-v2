@@ -1,5 +1,6 @@
 'use client'
 
+import { startTransition, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { usePathname } from 'next/navigation'
 import { useTransitionRouter } from 'next-view-transitions'
@@ -11,7 +12,6 @@ import { NAVIGATIONS, type NavigationT } from '@/constants/navigation.constant'
 import { slideInOut } from '@/constants/animation.constant'
 
 import { Burger } from './ui/Burger'
-import { useEffect, useState } from 'react'
 import { MobileMenu } from './MobileMenu'
 
 interface NavigationProps {
@@ -35,7 +35,9 @@ export const Navigation = ({ className }: NavigationProps) => {
 	}, [isMenuOpen])
 
 	useEffect(() => {
-		setIsMenuOpen(false)
+		startTransition(() => {
+			setIsMenuOpen(false)
+		})
 	}, [pathname])
 
 	return (
@@ -88,11 +90,7 @@ export const Navigation = ({ className }: NavigationProps) => {
 				</ul>
 			</nav>
 
-			<MobileMenu
-				isOpen={isMenuOpen}
-				onClose={() => setIsMenuOpen(false)}
-				// onNavigate={handleNavigationClick}
-			/>
+			<MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 		</>
 	)
 }
