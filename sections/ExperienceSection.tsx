@@ -14,6 +14,7 @@ export const ExperienceSection = () => {
 					'md:py-[40px]',
 					'lg:pt-[70px] lg:pb-[55px] lg:rounded-[80px]',
 					'xl:pt-[115px] xl:pb-[100px]',
+					'bg-[url(/star-2.svg)] bg-center bg-no-repeat bg-[length:clamp(1236px,687.69px+152.3vw,2820px)]',
 				)}
 			>
 				<Container>

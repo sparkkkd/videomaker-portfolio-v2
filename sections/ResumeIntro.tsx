@@ -21,6 +21,7 @@ export const ResumeIntro = ({ className }: ResumeIntroProps) => {
 				'pt-[107px] pb-[50px]',
 				'md:pt-[120px]',
 				'lg:pt-[200px]',
+				'bg-[url(/star-black.svg)] bg-center bg-no-repeat bg-[length:clamp(1236px,687.69px+152.3vw,2820px)]',
 			)}
 		>
 			<h1 className='sr-only' tabIndex={-1}>

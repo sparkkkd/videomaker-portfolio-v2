@@ -14,9 +14,10 @@ export const HeroSection = ({ className }: HeroSectionProps) => {
 		<section
 			className={twMerge(
 				className,
-				'pt-[110px] pb-[70px] bg-[#1C1C1C] rounded-b-[25px]',
+				'pt-[110px] pb-[70px] bg-[#1C1C1C] rounded-b-[25px] relative z-10',
 				'md:pt-[120px] md:pb-[140px] md:rounded-b-[70px]',
 				'lg:pt-[200px] lg:pb-[150px]',
+				'bg-[url(/star.svg)] bg-center bg-no-repeat bg-[length:clamp(1236px,687.69px+152.3vw,2820px)]',
 			)}
 		>
 			<Container>

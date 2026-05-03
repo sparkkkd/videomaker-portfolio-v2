@@ -22,7 +22,7 @@ export const AnimatedIntroButtons = ({
 			animate='animate'
 			variants={fadeInUpBlur(0.6, 5, 1)}
 		>
-			<Button className='!text-primary' variant='black'>
+			<Button className='!text-primary hover:!text-black' variant='black'>
 				Связаться со мной
 			</Button>
 			<Button className={twMerge('mt-[15px]', 'md:mt-0')} outline>

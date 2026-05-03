@@ -12,6 +12,7 @@
   --font-druk: "Druk", sans-serif;
  
   --breakpoint-xl: 87.5rem; /* 1404px */
+  --breakpoint-lg-custom: 75rem; /* 1200px */
   --breakpoint-sm-custom: 29.375rem; /* 470px */
   
   --color-primary: #e0fd35;

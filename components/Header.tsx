@@ -1,6 +1,5 @@
 import { twMerge } from 'tailwind-merge'
 
-import { Container } from './Container'
 import { Navigation } from './Navigation'
 import { HeaderBackground } from './HeaderBackground'
 
@@ -18,7 +17,7 @@ export const Header = ({ className }: HeaderProps) => {
 				'xl:px-0',
 			)}
 		>
-			<Container className='relative'>
+			<div className='relative max-w-[1200px] mx-auto'>
 				<HeaderBackground />
 
 				<div
@@ -30,7 +29,7 @@ export const Header = ({ className }: HeaderProps) => {
 				>
 					<Navigation />
 				</div>
-			</Container>
+			</div>
 		</header>
 	)
 }

@@ -4,8 +4,8 @@ export const Timeline = () => {
 	return (
 		<div
 			className={twMerge(
-				'mt-[32px] h-[84%] relative',
-				'lg:h-[86%]',
+				'mt-[32px] h-[83%] relative',
+				'lg:h-[85.5%]',
 				'xl:mt-[40px]',
 			)}
 		>

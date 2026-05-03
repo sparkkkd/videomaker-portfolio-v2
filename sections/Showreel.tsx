@@ -29,14 +29,14 @@ export const Showreel = ({ className }: ShowreelProps) => {
 		<section
 			className={twMerge(
 				className,
-				'mt-[-50px] relative',
+				'mt-[-50px] mb-[-20px] relative',
 				'md:mt-[-110px] md:mb-[-70px]',
 			)}
 		>
 			<Container>
 				<div className='w-full relative aspect-[16/9]'>
 					<Image
-						src='/showreel.png'
+						src='/showreel-v2.png'
 						className={twMerge(
 							'mx-auto object-contain select-none pointer-events-none z-20 relative',
 						)}
@@ -90,15 +90,6 @@ export const Showreel = ({ className }: ShowreelProps) => {
 							<div className='absolute inset-0 top-[-4%] h-[110%] bg-black z-0' />
 						</div>
 					)}
-
-					{/* <video
-						className='w-[80%] absolute left-[10%] top-[6%] object-contain z-[11]'
-						playsInline
-						preload='metadata'
-						ref={videoRef}
-					>
-						<source src='https://vimeo.com/1041491730' type='video/mp4' />
-					</video> */}
 				</div>
 			</Container>
 

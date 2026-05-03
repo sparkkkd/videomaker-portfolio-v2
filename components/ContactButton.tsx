@@ -9,8 +9,8 @@ export const ContactButton = ({ className }: ContactButtonProps) => {
 		<button
 			className={twMerge(
 				className,
-				'w-full h-[40px] flex items-center justify-center font-semibold leading-none bg-[linear-gradient(180deg,#f5ffba_0%,#fff_100%)] rounded-[10px] text-[14px]',
-				'lg:h-[139px] lg:text-[32px] lg:rounded-[37px] lg:hover:scale-[0.98] lg:transition-all lg:duration-300',
+				'w-full h-[40px] flex items-center justify-center font-semibold leading-none bg-white text-black rounded-[10px] text-[14px] transition-colors duration-300 hover:bg-[#8F8F8F]',
+				'lg:h-[139px] lg:text-[32px] lg:rounded-[37px]',
 			)}
 		>
 			Обсудить проект

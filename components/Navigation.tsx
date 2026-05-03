@@ -41,7 +41,13 @@ export const Navigation = ({ className }: NavigationProps) => {
 	}, [pathname])
 
 	return (
-		<>
+		<div
+			className={twMerge(
+				'w-full flex items-center justify-between',
+				'md:justify-start',
+				'lg-custom:justify-between',
+			)}
+		>
 			<Link
 				href='/'
 				onClick={(e) => {
@@ -67,7 +73,14 @@ export const Navigation = ({ className }: NavigationProps) => {
 			</Link>
 			<Burger className='md:hidden' onClick={() => setIsMenuOpen(true)} />
 
-			<nav className={twMerge(className, 'hidden md:flex')}>
+			<nav
+				className={twMerge(
+					className,
+					'hidden',
+					'md:flex md:ml-auto',
+					'lg-custom:absolute lg-custom:left-1/2 lg-custom:top-1/2 lg-custom:-translate-1/2',
+				)}
+			>
 				<ul className='text-white flex items-center lg:gap-[50px] md:gap-[30px]'>
 					{NAVIGATIONS.map((item) => (
 						<NavigationItem
@@ -76,22 +89,30 @@ export const Navigation = ({ className }: NavigationProps) => {
 							item={item}
 						/>
 					))}
-					<li>
-						<Link href='#' className='flex items-center gap-[10px]'>
-							<span className='text-xs lg:text-2xl'>Связь со мной</span>
-							<Image
-								src='/arrow-top-right.svg'
-								alt='contact me'
-								width={21}
-								height={21}
-							/>
-						</Link>
-					</li>
 				</ul>
 			</nav>
 
+			<Link
+				href='#'
+				className={twMerge(
+					'hidden',
+					'md:ml-[30px] md:flex md:items-center md:gap-[10px]',
+					'lg:ml-[50px]',
+				)}
+			>
+				<span className='font-bold text-white text-base lg:text-2xl'>
+					Связаться со мной
+				</span>
+				<Image
+					src='/arrow-top-right.svg'
+					alt='contact me'
+					width={21}
+					height={21}
+				/>
+			</Link>
+
 			<MobileMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
-		</>
+		</div>
 	)
 }
 
@@ -105,11 +126,16 @@ const NavigationItem = ({
 	const router = useTransitionRouter()
 	const pathname = usePathname()
 
+	const isActive = pathname === item.href
+
 	return (
 		<li className={twMerge(className)}>
 			<Link
 				href={item.href}
-				className='lg:text-2xl'
+				className={twMerge(
+					'lg:text-2xl',
+					isActive && 'text-[#CDFA03] font-bold',
+				)}
 				onClick={(e) => {
 					if (pathname === item.href) return
 
