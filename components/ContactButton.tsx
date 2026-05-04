@@ -10,6 +10,7 @@ export const ContactButton = ({ className }: ContactButtonProps) => {
 			className={twMerge(
 				className,
 				'w-full h-[40px] flex items-center justify-center font-semibold leading-none bg-white text-black rounded-[10px] text-[14px] transition-colors duration-300 hover:bg-[#8F8F8F]',
+				'md:h-[70px]',
 				'lg:h-[139px] lg:text-[32px] lg:rounded-[37px]',
 			)}
 		>

@@ -72,7 +72,9 @@ export const ProjectTabsAndContent = ({
 					exit='exit'
 					className={twMerge(
 						'mt-10 px-[10px] grid grid-cols-1 gap-5',
-						'lg:mt-[80px] lg:px-0 lg:grid-cols-2 lg:gap-[60px]',
+						'md:gap-y-[30px]',
+						'lg:mt-[50px] lg:px-0 lg:grid-cols-2 lg:gap-y-[30px]',
+						'xl:mt-[60px]',
 					)}
 				>
 					{activeTab?.projects.map(({ id, label, src }) => (
@@ -88,7 +90,7 @@ export const ProjectTabsAndContent = ({
 									width={569}
 									height={320}
 									className={twMerge(
-										'rounded-[15px]',
+										'w-full rounded-[15px] relative object-contain',
 										'lg:rounded-[30px] lg:transition-transform lg:duration-500 lg:group-hover:scale-105',
 									)}
 									priority={false}
@@ -97,7 +99,9 @@ export const ProjectTabsAndContent = ({
 							<h4
 								className={twMerge(
 									'mt-[10px] text-[14px] text-white leading-none',
-									'lg:mt-5 lg:text-[32px]',
+									'md:text-2xl',
+									'lg:mt-5 lg:text-[28px]',
+									'xl:text-[32px]',
 								)}
 							>
 								{label}

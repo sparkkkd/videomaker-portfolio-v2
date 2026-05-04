@@ -21,6 +21,7 @@ export const ProjectSection = ({ className }: ProjectSectionProps) => {
 					<h3
 						className={twMerge(
 							'text-center text-[28px] text-white font-semibold',
+							'md:text-[64px]',
 							'lg:text-[80px]',
 						)}
 					>

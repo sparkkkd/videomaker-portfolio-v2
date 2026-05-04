@@ -14,7 +14,7 @@ export const Footer = ({ className }: FooterProps) => {
 		<footer
 			className={twMerge(
 				className,
-				'mt-[-5px] pb-[155px] bg-[#DBFB1B] w-full relative overflow-hidden',
+				'mt-[-5px] pb-[70px] bg-[#DBFB1B] w-full relative overflow-hidden',
 				'lg:mt-[-76px] lg:pt-[76px] lg:pb-[200px]',
 			)}
 		>
@@ -22,7 +22,7 @@ export const Footer = ({ className }: FooterProps) => {
 				<div
 					className={twMerge(
 						'mt-[50px] py-[30px] px-5 w-full flex flex-col items-center bg-[#282828] rounded-[10px]',
-						'lg:mt-[124px] lg:px-0 lg:pt-[80px] lg:pb-[108px] lg:rounded-[30px]',
+						'lg:mt-[124px] lg:px-[40px] lg:pt-[80px] lg:pb-[108px] lg:rounded-[30px]',
 					)}
 				>
 					<h3
@@ -34,7 +34,7 @@ export const Footer = ({ className }: FooterProps) => {
 						Давайте создадим ваш следующий проект вместе
 					</h3>
 
-					<span
+					<p
 						className={twMerge(
 							'mt-[10px] text-[14px] text-center text-white opacity-70 leading-none',
 							'lg:mt-5 lg:max-w-[850px] lg:text-[32px] lg:leading-[120%]',
@@ -43,7 +43,7 @@ export const Footer = ({ className }: FooterProps) => {
 						Я открыт к сотрудничеству и предложениям о работе. Напишите мне,
 						чтобы обсудить ваши задачи, идеи или возможность присоединиться к
 						вашей команде
-					</span>
+					</p>
 
 					<ContactCards />
 				</div>

@@ -11,7 +11,7 @@ export const Container = ({ children, className }: ContainerProps) => {
 			className={twMerge(
 				className,
 				'mx-auto px-[10px]',
-				'lg:max-w-full lg:px-[90px]',
+				'lg:max-w-full lg:px-[40px]',
 				'xl:max-w-[1200px] xl:px-0',
 			)}
 		>
