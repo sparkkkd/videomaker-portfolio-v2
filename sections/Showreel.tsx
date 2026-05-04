@@ -36,7 +36,7 @@ export const Showreel = ({ className }: ShowreelProps) => {
 			<Container>
 				<div className='w-full relative aspect-[16/9]'>
 					<Image
-						src='/showreel-v2.png'
+						src='/showreel-v3.png'
 						className={twMerge(
 							'mx-auto object-contain select-none pointer-events-none z-20 relative',
 						)}
