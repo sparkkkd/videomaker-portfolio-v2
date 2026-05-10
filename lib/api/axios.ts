@@ -4,6 +4,7 @@ import axios, {
 	AxiosResponse,
 	InternalAxiosRequestConfig,
 } from 'axios'
+import { AUTH_KEYS } from '../auth'
 
 export interface ApiClient {
 	get<T>(url: string, config?: AxiosRequestConfig): Promise<T>
@@ -35,7 +36,7 @@ const axiosInstance: AxiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
 		if (typeof window !== 'undefined') {
-			const token = localStorage.getItem('accessToken')
+			const token = localStorage.getItem(AUTH_KEYS.ACCESS_TOKEN)
 
 			if (token && config.headers) {
 				config.headers.set('Authorization', `Bearer ${token}`)
@@ -56,7 +57,7 @@ axiosInstance.interceptors.response.use(
 			originalRequest._retry = true
 
 			try {
-				const refreshToken = localStorage.getItem('refreshToken')
+				const refreshToken = localStorage.getItem(AUTH_KEYS.REFRESH_TOKEN)
 
 				if (!refreshToken) throw new Error('Refresh token not found')
 
@@ -73,10 +74,10 @@ axiosInstance.interceptors.response.use(
 					},
 				)
 
-				localStorage.setItem('accessToken', accessToken)
+				localStorage.setItem(AUTH_KEYS.ACCESS_TOKEN, accessToken)
 
 				if (newRefreshToken) {
-					localStorage.setItem('refreshToken', newRefreshToken)
+					localStorage.setItem(AUTH_KEYS.REFRESH_TOKEN, newRefreshToken)
 				}
 
 				if (originalRequest.headers) {
@@ -85,8 +86,8 @@ axiosInstance.interceptors.response.use(
 
 				return axiosInstance(originalRequest)
 			} catch (error) {
-				localStorage.removeItem('accessToken')
-				localStorage.removeItem('refreshToken')
+				localStorage.removeItem(AUTH_KEYS.ACCESS_TOKEN)
+				localStorage.removeItem(AUTH_KEYS.REFRESH_TOKEN)
 
 				if (typeof window !== 'undefined') {
 					window.location.href = '/admin/login'

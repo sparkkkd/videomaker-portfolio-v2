@@ -3,6 +3,7 @@
 import { auth } from '@/lib/auth'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { Loader } from '../ui/Loader'
 
 interface WithAdminAuthProps {
 	children: React.ReactNode
@@ -25,8 +26,8 @@ export const WithAdminAuth = ({
 
 	if (!auth.isAuthenticated() && !pathname.includes('/login')) {
 		return (
-			<div className='min-h-screen flex item-center justify-center bg-secondary'>
-				<div className='animate-spin rounded-full h-12 w-12 border-4 border-accent border-t-transparent' />
+			<div className='min-h-screen relative flex item-center justify-center bg-secondary'>
+				<Loader />
 			</div>
 		)
 	}

@@ -1,18 +1,21 @@
 'use client'
 
-import { Button } from '@/components/ui/Button'
-import { api } from '@/lib/api/axios'
-import { ITokenResponse } from '@/lib/api/types'
-import { auth } from '@/lib/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosError } from 'axios'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import { z } from 'zod'
 import { motion } from 'framer-motion'
+
+import { api } from '@/lib/api/axios'
+import { ITokenResponse } from '@/lib/api/types'
+import { auth } from '@/lib/auth'
+
+import Image from 'next/image'
+
+import { LoginField } from '@/components/admin/LoginField'
 
 const loginSchema = z.object({
 	email: z.string().min(1, 'Обязательное поле'),
@@ -50,22 +53,22 @@ export default function Login() {
 				},
 			})
 
-			console.log(response)
-
 			auth.setTokens(response)
 
 			router.replace('/admin')
 			router.refresh()
 		} catch (error: unknown) {
-			if (error instanceof AxiosError) setError(error.response?.data.message)
-			console.error(error)
+			if (error instanceof AxiosError) {
+				if (error.status === 401) {
+					setError(error.response?.data.message)
+				} else {
+					setError('Что-то пошло не так')
+				}
+			}
 		} finally {
 			setLoading(false)
-			console.log(`123`)
 		}
 	}
-
-	console.log(errors)
 
 	return (
 		<div
@@ -104,59 +107,23 @@ export default function Login() {
 						</div>
 					)}
 
-					{/* Email */}
-					<div className={twMerge('flex flex-col gap-2 w-full')}>
-						<label
-							className={twMerge(
-								'w-full text-base font-medium text-accent',
-								'md:text-xl',
-							)}
-						>
-							Email
-						</label>
-						<input
-							className={twMerge(
-								'p-2 text-white bg-transparent border border-accent rounded-lg transition-colors duration-300 focus:outline-none placeholder:text-gray-500/50',
-								errors.email && 'border-red-500 focus:ring-red-500',
-							)}
-							type='email'
-							placeholder='admin@gmail.com'
-							disabled={loading}
-							{...register('email')}
-						/>
-						{errors.email && (
-							<p className={twMerge('text-red-500 text-sm')}>
-								{errors.email?.message}
-							</p>
-						)}
-					</div>
+					<LoginField
+						label='Email'
+						type='email'
+						register={register('email')}
+						disabled={loading}
+						error={errors.email}
+						placeholder='admin@admin.com'
+					/>
 
-					{/* Password */}
-					<div className={twMerge('flex flex-col gap-2')}>
-						<label
-							className={twMerge(
-								'text-base font-medium text-accent',
-								'md:text-xl',
-							)}
-						>
-							Пароль
-						</label>
-						<input
-							className={twMerge(
-								'p-2 text-white bg-transparent border border-accent rounded-lg transition-colors duration-300 focus:outline-none placeholder:text-gray-500/50',
-								errors.password && 'border-red-500 focus:ring-red-500',
-							)}
-							type='password'
-							placeholder='••••••••'
-							disabled={loading}
-							{...register('password')}
-						/>
-						{errors.password && (
-							<p className={twMerge('text-red-500 text-sm')}>
-								{errors.password.message}
-							</p>
-						)}
-					</div>
+					<LoginField
+						label='Пароль'
+						type='password'
+						register={register('password')}
+						disabled={loading}
+						error={errors.password}
+						placeholder='••••••••'
+					/>
 
 					<button
 						className={twMerge(
