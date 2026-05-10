@@ -22,8 +22,24 @@ export const auth = {
 		return localStorage.getItem(AUTH_KEYS.REFRESH_TOKEN)
 	},
 
+	isTokenValid: (): boolean => {
+		const token = auth.getAccessToken()
+
+		if (!token) return false
+
+		try {
+			const payloadBase64 = token.split('.')[1]
+			const payload = JSON.parse(atob(payloadBase64))
+
+			const now = Date.now() / 1000
+			return payload.exp > now
+		} catch {
+			return false
+		}
+	},
+
 	isAuthenticated: () => {
-		return !!auth.getAccessToken()
+		return !!auth.isTokenValid()
 	},
 
 	logout: () => {

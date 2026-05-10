@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import { z } from 'zod'
@@ -16,6 +16,8 @@ import { auth } from '@/lib/auth'
 import Image from 'next/image'
 
 import { LoginField } from '@/components/admin/LoginField'
+import { handleLoginError } from '@/lib/utils/errorHandlers'
+import { Loader } from '@/components/ui/Loader'
 
 const loginSchema = z.object({
 	email: z.string().min(1, 'Обязательное поле'),
@@ -27,8 +29,17 @@ type TLoginForm = z.infer<typeof loginSchema>
 export default function Login() {
 	const [error, setError] = useState<string | null>(null)
 	const [loading, setLoading] = useState<boolean>(false)
+	const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true)
 
 	const router = useRouter()
+
+	useEffect(() => {
+		if (auth.isAuthenticated()) {
+			router.replace('/admin')
+		} else {
+			setIsCheckingAuth(false)
+		}
+	}, [router])
 
 	const {
 		register,
@@ -58,16 +69,18 @@ export default function Login() {
 			router.replace('/admin')
 			router.refresh()
 		} catch (error: unknown) {
-			if (error instanceof AxiosError) {
-				if (error.status === 401) {
-					setError(error.response?.data.message)
-				} else {
-					setError('Что-то пошло не так')
-				}
-			}
+			setError(handleLoginError(error))
 		} finally {
 			setLoading(false)
 		}
+	}
+
+	if (isCheckingAuth) {
+		return (
+			<div className='min-h-screen flex items-center justify-center bg-secondary'>
+				<Loader />
+			</div>
+		)
 	}
 
 	return (
@@ -102,7 +115,12 @@ export default function Login() {
 			>
 				<form onSubmit={handleSubmit(onSubmit)} className='w-full space-y-6'>
 					{error && (
-						<div className={twMerge('text-red-700 text-center text-sm')}>
+						<div
+							className={twMerge(
+								'text-red-700 text-center text-sm',
+								'md:text-lg',
+							)}
+						>
 							{error}
 						</div>
 					)}
