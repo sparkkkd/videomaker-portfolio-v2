@@ -47,10 +47,7 @@ export default function RootLayout({
 				h-full antialiased`}
 			>
 				<body className='min-h-full flex flex-col font-sans bg-[#fff]'>
-					<Header />
 					{children}
-
-					<Footer />
 				</body>
 			</html>
 		</ViewTransitions>

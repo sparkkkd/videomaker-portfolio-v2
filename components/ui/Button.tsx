@@ -1,11 +1,12 @@
 import { twMerge } from 'tailwind-merge'
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	className?: string
 	children: React.ReactNode
 	variant?: 'white' | 'black'
 	fullWidth?: boolean
 	outline?: boolean
+	onClick?: () => void
 }
 
 export const Button = ({
@@ -14,6 +15,8 @@ export const Button = ({
 	variant = 'white',
 	fullWidth = true,
 	outline = false,
+	onClick,
+	...rest
 }: ButtonProps) => {
 	return (
 		<button
@@ -28,6 +31,8 @@ export const Button = ({
 					'text-white bg-[#000] hover:bg-white hover:text-black',
 				outline && 'border border-black bg-white hover:border-transparent',
 			)}
+			onClick={onClick}
+			{...rest}
 		>
 			{children}
 		</button>

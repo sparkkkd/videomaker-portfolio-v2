@@ -1,0 +1,192 @@
+'use client'
+
+import { Button } from '@/components/ui/Button'
+import { api } from '@/lib/api/axios'
+import { ITokenResponse } from '@/lib/api/types'
+import { auth } from '@/lib/auth'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AxiosError } from 'axios'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
+import { z } from 'zod'
+import { motion } from 'framer-motion'
+
+const loginSchema = z.object({
+	email: z.string().min(1, 'Обязательное поле'),
+	password: z.string().min(6, 'Минимум 6 символов'),
+})
+
+type TLoginForm = z.infer<typeof loginSchema>
+
+export default function Login() {
+	const [error, setError] = useState<string | null>(null)
+	const [loading, setLoading] = useState<boolean>(false)
+
+	const router = useRouter()
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TLoginForm>({
+		resolver: zodResolver(loginSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+	})
+
+	const onSubmit = async (data: TLoginForm) => {
+		setError(null)
+		setLoading(true)
+
+		try {
+			const response = await api.post<ITokenResponse>('/auth/login', data, {
+				headers: {
+					'content-type': 'application/json',
+				},
+			})
+
+			console.log(response)
+
+			auth.setTokens(response)
+
+			router.replace('/admin')
+			router.refresh()
+		} catch (error: unknown) {
+			if (error instanceof AxiosError) setError(error.response?.data.message)
+			console.error(error)
+		} finally {
+			setLoading(false)
+			console.log(`123`)
+		}
+	}
+
+	console.log(errors)
+
+	return (
+		<div
+			className={twMerge(
+				'py-5 min-h-screen flex flex-col items-center justify-center bg-secondary',
+			)}
+		>
+			<div className={twMerge('flex flex-col items-center gap-4')}>
+				<Image
+					src='/logo.svg'
+					alt='logo'
+					width={100}
+					height={100}
+					className={twMerge('h-auto md:w-[150px] md:h-auto')}
+				/>
+				<span
+					className={twMerge(
+						'text-2xl text-white font-semibold',
+						'md:text-3xl',
+					)}
+				>
+					Панель управления
+				</span>
+			</div>
+
+			<div
+				className={twMerge(
+					'mt-5 p-6 flex items-center justify-center bg-[#232323] shadow-lg rounded-2xl',
+					'md:w-[500px]',
+				)}
+			>
+				<form onSubmit={handleSubmit(onSubmit)} className='w-full space-y-6'>
+					{error && (
+						<div className={twMerge('text-red-700 text-center text-sm')}>
+							{error}
+						</div>
+					)}
+
+					{/* Email */}
+					<div className={twMerge('flex flex-col gap-2 w-full')}>
+						<label
+							className={twMerge(
+								'w-full text-base font-medium text-accent',
+								'md:text-xl',
+							)}
+						>
+							Email
+						</label>
+						<input
+							className={twMerge(
+								'p-2 text-white bg-transparent border border-accent rounded-lg transition-colors duration-300 focus:outline-none placeholder:text-gray-500/50',
+								errors.email && 'border-red-500 focus:ring-red-500',
+							)}
+							type='email'
+							placeholder='admin@gmail.com'
+							disabled={loading}
+							{...register('email')}
+						/>
+						{errors.email && (
+							<p className={twMerge('text-red-500 text-sm')}>
+								{errors.email?.message}
+							</p>
+						)}
+					</div>
+
+					{/* Password */}
+					<div className={twMerge('flex flex-col gap-2')}>
+						<label
+							className={twMerge(
+								'text-base font-medium text-accent',
+								'md:text-xl',
+							)}
+						>
+							Пароль
+						</label>
+						<input
+							className={twMerge(
+								'p-2 text-white bg-transparent border border-accent rounded-lg transition-colors duration-300 focus:outline-none placeholder:text-gray-500/50',
+								errors.password && 'border-red-500 focus:ring-red-500',
+							)}
+							type='password'
+							placeholder='••••••••'
+							disabled={loading}
+							{...register('password')}
+						/>
+						{errors.password && (
+							<p className={twMerge('text-red-500 text-sm')}>
+								{errors.password.message}
+							</p>
+						)}
+					</div>
+
+					<button
+						className={twMerge(
+							'w-full min-h-10 flex items-center justify-center bg-accent text-white py-2 rounded-lg transition-colors duration-300 hover:bg-accent/80 disabled:opacity-50 disabled:cursor-not-allowed',
+							loading && 'bg-[#fd8d3d] cursor-not-allowed',
+							'md:text-xl md:min-h-11',
+						)}
+						type='submit'
+					>
+						{loading ? (
+							<motion.div
+								className='animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent'
+								initial={{ opacity: 1 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 1 }}
+							/>
+						) : (
+							<motion.span
+								initial={{ opacity: 1 }}
+								animate={{ opacity: 1 }}
+								exit={{ opacity: 0 }}
+								transition={{ duration: 1 }}
+							>
+								Войти
+							</motion.span>
+						)}
+					</button>
+				</form>
+			</div>
+		</div>
+	)
+}
