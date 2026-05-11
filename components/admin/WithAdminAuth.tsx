@@ -1,6 +1,6 @@
 'use client'
 
-import { auth } from '@/lib/auth'
+import { auth } from '@/lib/auth/auth'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Loader } from '../ui/Loader'
@@ -12,7 +12,7 @@ interface WithAdminAuthProps {
 
 export const WithAdminAuth = ({
 	children,
-	redirectTo = '/admin/login',
+	redirectTo = '/login',
 }: WithAdminAuthProps) => {
 	const router = useRouter()
 	const pathname = usePathname()

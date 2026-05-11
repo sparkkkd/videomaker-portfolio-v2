@@ -1,15 +1,20 @@
 import axios, {
-	AxiosRequestConfig,
+	AxiosError,
 	AxiosInstance,
+	AxiosRequestConfig,
 	AxiosResponse,
 	InternalAxiosRequestConfig,
 } from 'axios'
-import { AUTH_KEYS } from '../auth'
+
+import { tokenStorage } from '../auth/token-storage'
 
 export interface ApiClient {
 	get<T>(url: string, config?: AxiosRequestConfig): Promise<T>
+
 	post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
+
 	patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
+
 	delete<T>(url: string, config?: AxiosRequestConfig): Promise<T>
 }
 
@@ -21,83 +26,115 @@ export interface ApiErrorResponse {
 	path: string
 }
 
-export interface ApiSuccessResponse<T> {
-	data: T
+type FailedQueueItem = {
+	resolve: (token: string) => void
+	reject: (error: unknown) => void
+}
+
+const failedQueue: FailedQueueItem[] = []
+
+let isRefreshing = false
+
+const processQueue = (error: unknown, token: string | null = null) => {
+	failedQueue.forEach((request) => {
+		if (error) {
+			request.reject(error)
+
+			return
+		}
+
+		request.resolve(token!)
+	})
+
+	failedQueue.length = 0
 }
 
 const axiosInstance: AxiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	timeout: 10000,
+	withCredentials: true,
 	headers: {
 		'Content-Type': 'application/json',
 	},
-	timeout: 10000,
 })
 
-axiosInstance.interceptors.request.use(
-	(config: InternalAxiosRequestConfig) => {
-		if (typeof window !== 'undefined') {
-			const token = localStorage.getItem(AUTH_KEYS.ACCESS_TOKEN)
+axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+	const accessToken = tokenStorage.getAccessToken()
 
-			if (token && config.headers) {
-				config.headers.set('Authorization', `Bearer ${token}`)
-			}
-		}
+	if (accessToken && config.headers) {
+		config.headers.Authorization = `Bearer ${accessToken}`
+	}
 
-		return config
-	},
-	(error) => Promise.reject(error),
-)
+	return config
+})
 
 axiosInstance.interceptors.response.use(
 	(response: AxiosResponse) => response.data,
-	async (error) => {
-		const originalRequest = error.config
 
-		if (error.response?.status === 401 && !originalRequest._retry) {
-			originalRequest._retry = true
-
-			try {
-				const refreshToken = localStorage.getItem(AUTH_KEYS.REFRESH_TOKEN)
-
-				if (!refreshToken) throw new Error('Refresh token not found')
-
-				const {
-					data: { accessToken, refreshToken: newRefreshToken },
-				} = await axios.post(
-					`${axiosInstance.defaults.baseURL}/auth/refresh`,
-					{},
-					{
-						headers: {
-							Authorization: `Bearer ${refreshToken}`,
-							'Content-Type': 'application/json',
-						},
-					},
-				)
-
-				localStorage.setItem(AUTH_KEYS.ACCESS_TOKEN, accessToken)
-
-				if (newRefreshToken) {
-					localStorage.setItem(AUTH_KEYS.REFRESH_TOKEN, newRefreshToken)
-				}
-
-				if (originalRequest.headers) {
-					originalRequest.headers.set('Authorization', `Bearer ${accessToken}`)
-				}
-
-				return axiosInstance(originalRequest)
-			} catch (error) {
-				localStorage.removeItem(AUTH_KEYS.ACCESS_TOKEN)
-				localStorage.removeItem(AUTH_KEYS.REFRESH_TOKEN)
-
-				if (typeof window !== 'undefined') {
-					window.location.href = '/admin/login'
-				}
-
-				return Promise.reject(error)
-			}
+	async (error: AxiosError<ApiErrorResponse>) => {
+		const originalRequest = error.config as InternalAxiosRequestConfig & {
+			_retry?: boolean
 		}
 
-		return Promise.reject(error)
+		if (error.response?.status !== 401 || originalRequest._retry) {
+			return Promise.reject(error)
+		}
+
+		originalRequest._retry = true
+
+		if (isRefreshing) {
+			return new Promise((resolve, reject) => {
+				failedQueue.push({
+					resolve: (token: string) => {
+						if (originalRequest.headers) {
+							originalRequest.headers.Authorization = `Bearer ${token}`
+						}
+
+						resolve(axiosInstance(originalRequest))
+					},
+
+					reject,
+				})
+			})
+		}
+
+		isRefreshing = true
+
+		try {
+			const response = await axios.post<{
+				accessToken: string
+			}>(
+				`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+				{},
+				{
+					withCredentials: true,
+				},
+			)
+
+			const newAccessToken = response.data.accessToken
+
+			tokenStorage.setAccessToken(newAccessToken)
+
+			processQueue(null, newAccessToken)
+
+			if (originalRequest.headers) {
+				originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+			}
+
+			return axiosInstance(originalRequest)
+		} catch (refreshError) {
+			processQueue(refreshError)
+
+			tokenStorage.clear()
+
+			if (typeof window !== 'undefined') {
+				window.location.href = '/admin/login'
+			}
+
+			return Promise.reject(refreshError)
+		} finally {
+			isRefreshing = false
+		}
 	},
 )
 

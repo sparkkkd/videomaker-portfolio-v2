@@ -6,7 +6,6 @@ export interface ILoginRequest {
 
 export interface ITokenResponse {
 	accessToken: string
-	refreshToken: string
 	tokenType: string
 	expiresIn: number
 }

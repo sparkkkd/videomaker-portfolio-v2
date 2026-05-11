@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import { z } from 'zod'
@@ -11,7 +11,7 @@ import { motion } from 'framer-motion'
 
 import { api } from '@/lib/api/axios'
 import { ITokenResponse } from '@/lib/api/types'
-import { auth } from '@/lib/auth'
+import { auth } from '@/lib/auth/auth'
 
 import Image from 'next/image'
 
@@ -20,7 +20,7 @@ import { handleLoginError } from '@/lib/utils/errorHandlers'
 import { Loader } from '@/components/ui/Loader'
 
 const loginSchema = z.object({
-	email: z.string().min(1, 'Обязательное поле'),
+	email: z.string().email('Некорректный email'),
 	password: z.string().min(6, 'Минимум 6 символов'),
 })
 
@@ -53,27 +53,31 @@ export default function Login() {
 		},
 	})
 
-	const onSubmit = async (data: TLoginForm) => {
-		setError(null)
-		setLoading(true)
+	const onSubmit = useCallback(
+		async (data: TLoginForm) => {
+			if (loading) return
 
-		try {
-			const response = await api.post<ITokenResponse>('/auth/login', data, {
-				headers: {
-					'content-type': 'application/json',
-				},
-			})
+			setError(null)
+			setLoading(true)
 
-			auth.setTokens(response)
+			try {
+				const response = await api.post<ITokenResponse>('/auth/login', data, {
+					headers: {
+						'content-type': 'application/json',
+					},
+				})
 
-			router.replace('/admin')
-			router.refresh()
-		} catch (error: unknown) {
-			setError(handleLoginError(error))
-		} finally {
-			setLoading(false)
-		}
-	}
+				auth.setAccessToken(response.accessToken)
+
+				router.replace('/admin')
+			} catch (error: unknown) {
+				setError(handleLoginError(error))
+			} finally {
+				setLoading(false)
+			}
+		},
+		[loading, router],
+	)
 
 	if (isCheckingAuth) {
 		return (

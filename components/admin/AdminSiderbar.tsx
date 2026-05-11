@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/Button'
-import { auth } from '@/lib/auth'
+import { auth } from '@/lib/auth/auth'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
@@ -50,7 +50,6 @@ export const AdminSiderbar = ({ className }: AdminSiderbarProps) => {
 				<Button
 					onClick={() => {
 						auth.logout()
-						window.location.href = '/admin/login'
 					}}
 				>
 					Выйти

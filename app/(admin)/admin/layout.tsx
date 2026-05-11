@@ -1,20 +1,14 @@
 'use client'
 
+import { AdminSiderbar } from '@/components/admin/AdminSiderbar'
 import { QueryProvider } from '@/components/admin/QueryProvider'
 import { WithAdminAuth } from '@/components/admin/WithAdminAuth'
-import { AdminSiderbar } from '../../components/admin/AdminSiderbar'
-import { usePathname } from 'next/navigation'
+import { AuthProvider } from '@/lib/auth/auth.provider'
 
 export default function layout({ children }: { children: React.ReactNode }) {
-	const pathname = usePathname()
-
-	const isAuthRoute = pathname?.startsWith('/admin/login')
-
-	if (isAuthRoute) return <QueryProvider>{children}</QueryProvider>
-
 	return (
 		<QueryProvider>
-			<WithAdminAuth>
+			<AuthProvider>
 				<div className='min-h-screen bg-gray-50 flex'>
 					<AdminSiderbar className='w-[30%]' />
 
@@ -25,7 +19,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
 						<main className='flex-1 p-4'>{children}</main>
 					</div>
 				</div>
-			</WithAdminAuth>
+			</AuthProvider>
 		</QueryProvider>
 	)
 }
