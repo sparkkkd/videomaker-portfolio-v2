@@ -16,6 +16,7 @@ export interface ITab {
 	label: string
 	slug: string
 	order: number
+	isActive: boolean
 }
 
 export interface ITabWithProject extends ITab {
@@ -45,6 +46,7 @@ export interface IProject {
 	href: string | null
 	order: number
 	tabId: string
+	isActive: boolean
 	createdAt: string
 	updatedAt: string
 }
