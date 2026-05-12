@@ -1,9 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import { z } from 'zod'
@@ -17,7 +16,6 @@ import Image from 'next/image'
 
 import { LoginField } from '@/components/admin/LoginField'
 import { handleLoginError } from '@/lib/utils/errorHandlers'
-import { Loader } from '@/components/ui/Loader'
 
 const loginSchema = z.object({
 	email: z.string().email('Некорректный email'),
@@ -29,17 +27,8 @@ type TLoginForm = z.infer<typeof loginSchema>
 export default function Login() {
 	const [error, setError] = useState<string | null>(null)
 	const [loading, setLoading] = useState<boolean>(false)
-	const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true)
 
 	const router = useRouter()
-
-	useEffect(() => {
-		if (auth.isAuthenticated()) {
-			router.replace('/admin')
-		} else {
-			setIsCheckingAuth(false)
-		}
-	}, [router])
 
 	const {
 		register,
@@ -78,14 +67,6 @@ export default function Login() {
 		},
 		[loading, router],
 	)
-
-	if (isCheckingAuth) {
-		return (
-			<div className='min-h-screen flex items-center justify-center bg-secondary'>
-				<Loader />
-			</div>
-		)
-	}
 
 	return (
 		<div

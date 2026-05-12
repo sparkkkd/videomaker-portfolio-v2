@@ -1,26 +1,29 @@
 'use client'
 
 import { api } from '../api/axios'
-import { tokenStorage } from './token-storage'
 
 export const auth = {
 	setAccessToken(accessToken: string): void {
-		tokenStorage.setAccessToken(accessToken)
+		localStorage.setItem('accessToken', accessToken)
 	},
 
 	getAccessToken(): string | null {
-		return tokenStorage.getAccessToken()
+		return localStorage.getItem('accessToken')
 	},
 
 	isAuthenticated(): boolean {
-		return !!tokenStorage.getAccessToken()
+		return !!localStorage.getItem('accessToken')
+	},
+
+	clear: (): void => {
+		localStorage.removeItem('accessToken')
 	},
 
 	async logout(): Promise<void> {
 		try {
 			await api.post('/auth/logout')
 		} finally {
-			tokenStorage.clear()
+			localStorage.removeItem('accessToken')
 
 			if (typeof window !== 'undefined') {
 				window.location.href = '/login'
@@ -29,7 +32,7 @@ export const auth = {
 	},
 
 	getAuthHeader(): Record<string, string> {
-		const token = tokenStorage.getAccessToken()
+		const token = auth.getAccessToken()
 
 		return token
 			? {

@@ -2,7 +2,6 @@
 
 import { AdminSiderbar } from '@/components/admin/AdminSiderbar'
 import { QueryProvider } from '@/components/admin/QueryProvider'
-import { WithAdminAuth } from '@/components/admin/WithAdminAuth'
 import { AuthProvider } from '@/lib/auth/auth.provider'
 
 export default function layout({ children }: { children: React.ReactNode }) {

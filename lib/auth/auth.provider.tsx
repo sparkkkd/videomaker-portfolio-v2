@@ -1,9 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { tokenStorage } from './token-storage'
 import axios from 'axios'
 import { AuthContext } from './auth.context'
+import { auth } from './auth'
 
 interface AuthRefreshResponse {
 	accessToken: string
@@ -18,7 +18,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 
 	const login = useCallback((accessToken: string) => {
-		tokenStorage.setAccessToken(accessToken)
+		auth.setAccessToken(accessToken)
 		setIsAuthenticated(true)
 	}, [])
 
@@ -32,13 +32,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
 		} catch (error) {
 			console.error(error)
 		} finally {
-			tokenStorage.clear()
+			auth.clear()
 			setIsAuthenticated(false)
 			window.location.href = '/login'
 		}
 	}, [])
 
 	const restoreSession = useCallback(async () => {
+		if (auth.getAccessToken()) {
+			setIsAuthenticated(true)
+			setIsLoading(false)
+			return
+		}
+
 		try {
 			const response = await axios.post<AuthRefreshResponse>(
 				`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
@@ -47,11 +53,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 					withCredentials: true,
 				},
 			)
-
-			tokenStorage.setAccessToken(response.data.accessToken)
+			auth.setAccessToken(response.data.accessToken)
 			setIsAuthenticated(true)
-		} catch (error) {
-			tokenStorage.clear()
+		} catch {
+			auth.clear()
 			setIsAuthenticated(false)
 			window.location.href = '/login'
 		} finally {

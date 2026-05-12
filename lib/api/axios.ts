@@ -6,7 +6,7 @@ import axios, {
 	InternalAxiosRequestConfig,
 } from 'axios'
 
-import { tokenStorage } from '../auth/token-storage'
+import { auth } from '../auth/auth'
 
 export interface ApiClient {
 	get<T>(url: string, config?: AxiosRequestConfig): Promise<T>
@@ -59,7 +59,7 @@ const axiosInstance: AxiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-	const accessToken = tokenStorage.getAccessToken()
+	const accessToken = auth.getAccessToken()
 
 	if (accessToken && config.headers) {
 		config.headers.Authorization = `Bearer ${accessToken}`
@@ -113,7 +113,7 @@ axiosInstance.interceptors.response.use(
 
 			const newAccessToken = response.data.accessToken
 
-			tokenStorage.setAccessToken(newAccessToken)
+			auth.setAccessToken(newAccessToken)
 
 			processQueue(null, newAccessToken)
 
@@ -125,10 +125,10 @@ axiosInstance.interceptors.response.use(
 		} catch (refreshError) {
 			processQueue(refreshError)
 
-			tokenStorage.clear()
+			auth.clear()
 
 			if (typeof window !== 'undefined') {
-				window.location.href = '/admin/login'
+				window.location.href = '/login'
 			}
 
 			return Promise.reject(refreshError)
