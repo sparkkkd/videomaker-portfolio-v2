@@ -1,112 +1,57 @@
-import {
-	useMutation,
-	UseMutationOptions,
-	useQuery,
-	useQueryClient,
-	UseQueryOptions,
-} from '@tanstack/react-query'
-import {
-	ICreateProjectRequest,
-	IProject,
-	IUpdateProjectRequest,
-} from '../types'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+
 import { queryKeys } from '../queryKeys'
-import { api } from '../axios'
+import { UpdateProjectRequest } from '../types/project.types'
+import { projectsApi } from '../services/projects.service'
 
-export const useProjects = (
-	tabId?: string,
-	options?: Omit<UseQueryOptions<IProject[], Error>, 'queryKey' | 'queryFn'>,
-) => {
-	return useQuery<IProject[], Error>({
+export const useProjects = (tabId?: string) => {
+	return useQuery({
 		queryKey: queryKeys.projects.list(tabId),
-		queryFn: () => {
-			const url = tabId ? `/projects/?tabId=${tabId}` : '/projects'
-			return api.get<IProject[]>(url)
-		},
-		staleTime: 5 * 60 * 1000,
-		...options,
+		queryFn: () => projectsApi.getAll(),
 	})
 }
 
-export const useProject = (
-	id: string,
-	options?: Omit<UseQueryOptions<IProject, Error>, 'queryKey' | 'queryFn'>,
-) => {
-	return useQuery<IProject, Error>({
+export const useProjectById = (id: string) => {
+	return useQuery({
 		queryKey: queryKeys.projects.detail(id),
-		queryFn: () => api.get<IProject>(`/projects/${id}`),
-		staleTime: 5 * 60 * 1000,
-		...options,
+		queryFn: () => projectsApi.getById(id),
+		enabled: !!id,
 	})
 }
 
-export const useCreateProject = (
-	options?: UseMutationOptions<IProject, Error, ICreateProjectRequest>,
-) => {
+export const useCreateProject = () => {
 	const queryClient = useQueryClient()
 
-	return useMutation<IProject, Error, ICreateProjectRequest>({
-		mutationFn: (data) => api.post<IProject>('/projects', data),
-		onSuccess: (_, { tabId }) => {
-			queryClient.invalidateQueries({
-				queryKey: queryKeys.projects.list(tabId),
-			})
-			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.withProject() })
+	return useMutation({
+		mutationFn: projectsApi.create,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: queryKeys.projects.all })
 		},
-		...options,
 	})
 }
 
-export const useUpdateProject = (
-	options?: UseMutationOptions<
-		IProject,
-		Error,
-		{ id: string } & IUpdateProjectRequest
-	>,
-) => {
+export const useUpdateProject = () => {
 	const queryClient = useQueryClient()
 
-	return useMutation<IProject, Error, IUpdateProjectRequest>({
-		mutationFn: ({ id, ...data }) =>
-			api.patch<IProject>(`/projects/${id}`, data),
+	return useMutation({
+		mutationFn: ({ id, data }: { id: string; data: UpdateProjectRequest }) =>
+			projectsApi.update(id, data),
 		onSuccess: (_, { id }) => {
 			queryClient.invalidateQueries({ queryKey: queryKeys.projects.all })
-			queryClient.invalidateQueries({ queryKey: queryKeys.projects.detail(id) })
+			queryClient.invalidateQueries({
+				queryKey: queryKeys.projects.detail(id),
+			})
 		},
-		...options,
 	})
 }
 
-export const useDeleteProject = (
-	options?: UseMutationOptions<void, Error, string>,
-) => {
+export const useDeleteProject = () => {
 	const queryClient = useQueryClient()
 
-	return useMutation<void, Error, string>({
-		mutationFn: (id) => api.delete(`/projects/${id}`),
+	return useMutation({
+		mutationFn: projectsApi.delete,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: queryKeys.projects.all })
 		},
-		...options,
-	})
-}
-
-export const useReorderProjects = (
-	options?: UseMutationOptions<
-		void,
-		Error,
-		{ projectIds: string[]; tabId: string }
-	>,
-) => {
-	const queryClient = useQueryClient()
-
-	return useMutation<void, Error, { projectIds: string[]; tabId: string }>({
-		mutationFn: ({ projectIds, tabId }) =>
-			api.post<void>(`/projects/reorder?tabId=${tabId}`, { projectIds }),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: queryKeys.projects.all })
-			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.withProject() })
-		},
-		...options,
 	})
 }

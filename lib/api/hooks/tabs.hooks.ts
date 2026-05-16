@@ -1,109 +1,65 @@
-import {
-	useMutation,
-	UseMutationOptions,
-	useQuery,
-	useQueryClient,
-	UseQueryOptions,
-} from '@tanstack/react-query'
-import {
-	ICreateTabRequest,
-	ITab,
-	ITabWithProject,
-	IUpdateTabRequest,
-} from '../types'
-import { api } from '../axios'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+
 import { queryKeys } from '../queryKeys'
+import { UpdateTabRequest } from '../types/tabs.types'
+import { tabsApi } from '../services/tabs.service'
 
-export const useTabs = (
-	options?: Omit<UseQueryOptions<ITab[], Error>, 'queryKey' | 'queryFn'>,
-) => {
-	return useQuery<ITab[], Error>({
+export const useTabs = () => {
+	return useQuery({
 		queryKey: queryKeys.tabs.list(),
-		queryFn: () => api.get<ITab[]>('/tabs'),
-		staleTime: 5 * 60 * 1000,
-		...options,
+		queryFn: tabsApi.getAll,
 	})
 }
 
-export const useTabsWithProjects = (
-	options?: Omit<
-		UseQueryOptions<ITabWithProject[], Error>,
-		'queryKey' | 'queryFn'
-	>,
-) => {
-	return useQuery<ITabWithProject[], Error>({
+export const useTabsWithProject = () => {
+	return useQuery({
 		queryKey: queryKeys.tabs.withProject(),
-		queryFn: () => api.get<ITabWithProject[]>('/tabs/projects'),
-		staleTime: 5 * 60 * 1000,
-		...options,
+		queryFn: tabsApi.getAllWithProjects,
 	})
 }
 
-export const useTabBySlug = (
-	slug: string,
-	options?: Omit<UseQueryOptions<ITab, Error>, 'queryKey' | 'queryFn'>,
-) => {
-	return useQuery<ITab, Error>({
-		queryKey: queryKeys.tabs.bySlug(slug),
-		queryFn: () => api.get<ITab>(`/tabs/${slug}`),
-		staleTime: 5 * 60 * 1000,
-		...options,
+export const useTabBySlug = (slug: string) => {
+	return useQuery({
+		queryKey: queryKeys.tabs.list(),
+		queryFn: () => tabsApi.getBySlug(slug),
+		enabled: !!slug,
 	})
 }
 
-export const useCreateTab = (
-	options?: UseMutationOptions<ITab, Error, ICreateTabRequest>,
-) => {
+export const useCreateTab = () => {
 	const queryClient = useQueryClient()
 
-	return useMutation<ITab, Error, ICreateTabRequest>({
-		mutationFn: (data) => api.post<ITab>('/tabs', data),
+	return useMutation({
+		mutationFn: tabsApi.create,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.all })
+			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.list() })
+			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.withProject() })
 		},
-		...options,
 	})
 }
 
-export const useUpdateTab = (
-	options?: UseMutationOptions<ITab, Error, { id: string } & IUpdateTabRequest>,
-) => {
+export const useUpdateTab = () => {
 	const queryClient = useQueryClient()
 
-	return useMutation<ITab, Error, { id: string } & IUpdateTabRequest>({
-		mutationFn: ({ id, ...data }) => api.patch<ITab>(`/tabs/${id}`, data),
+	return useMutation({
+		mutationFn: ({ id, data }: { id: string; data: UpdateTabRequest }) =>
+			tabsApi.update(id, data),
 		onSuccess: (_, { id }) => {
-			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.all })
+			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.list() })
+			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.withProject() })
 			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.detail(id) })
 		},
-		...options,
 	})
 }
 
-export const useDeleteTab = (
-	options?: UseMutationOptions<void, Error, string>,
-) => {
+export const useDeleteTab = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: (id) => api.delete(`/tabs/${id}`),
+		mutationFn: tabsApi.delete,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.all })
+			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.list() })
+			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.withProject() })
 		},
-		...options,
-	})
-}
-
-export const useReorderTabs = (
-	options?: UseMutationOptions<void, Error, string[]>,
-) => {
-	const queryClient = useQueryClient()
-
-	return useMutation({
-		mutationFn: (tabIds) => api.post('/tabs/reorder', { tabIds }),
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.all })
-		},
-		...options,
 	})
 }

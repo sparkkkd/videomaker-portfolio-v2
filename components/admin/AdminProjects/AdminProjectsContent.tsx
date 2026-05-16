@@ -1,10 +1,17 @@
-import { useAdminStore } from '@/lib/store/admin.store'
 import { twMerge } from 'tailwind-merge'
-import Image from 'next/image'
 import { useState } from 'react'
 import { AnimatePresence, motion, Variants } from 'framer-motion'
+
+import Image from 'next/image'
+
+import { Project } from '@/lib/api/types/project.types'
+
+import { useProjects } from '@/lib/api/hooks/projects.hooks'
+import { useTabs } from '@/lib/api/hooks/tabs.hooks'
+
 import { AdminProjectsListView } from './AdminProjectsListView'
 import { AdminProjectsCardView } from './AdminProjectsCardView'
+import { CreateEditProjectModal } from './CreateEditProjectModal'
 
 interface AdminProjectsContentProps {
 	className?: string
@@ -19,8 +26,36 @@ const ViewVariants: Variants = {
 export const AdminProjectsContent = ({
 	className,
 }: AdminProjectsContentProps) => {
-	const { projects } = useAdminStore()
+	const { data: projects = [], isLoading: projectsLoading } = useProjects()
+	const { data: tabs = [], isLoading: tabsLoading } = useTabs()
+
 	const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
+
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [editingProject, setEditingProject] = useState<Project | null>(null)
+
+	const handleCreate = () => {
+		setEditingProject(null)
+		setIsModalOpen(true)
+	}
+
+	const handleEdit = (project: Project) => {
+		setEditingProject(project)
+		setIsModalOpen(true)
+	}
+
+	if (projectsLoading || tabsLoading) {
+		return (
+			<div
+				className={twMerge(
+					className,
+					'mt-5 flex items-center justify-center py-12',
+				)}
+			>
+				<div className='animate-spin rounded-full h-8 w-8 border-4 border-accent border-t-transparent' />
+			</div>
+		)
+	}
 
 	return (
 		<div className={twMerge(className, 'mt-5 space-y-6')}>
@@ -61,6 +96,7 @@ export const AdminProjectsContent = ({
 						'hover:bg-accent/70 transition-colors',
 						'flex items-center space-x-2',
 					)}
+					onClick={handleCreate}
 				>
 					<span>+</span>
 					<span>Создать проект</span>
@@ -76,7 +112,7 @@ export const AdminProjectsContent = ({
 						animate='animate'
 						exit='exit'
 					>
-						<AdminProjectsCardView projects={projects} />
+						<AdminProjectsCardView projects={projects} onEdit={handleEdit} />
 					</motion.div>
 				)}
 
@@ -88,16 +124,27 @@ export const AdminProjectsContent = ({
 						animate='animate'
 						exit='exit'
 					>
-						<AdminProjectsListView projects={projects} />
+						<AdminProjectsListView projects={projects} onEdit={handleEdit} />
 					</motion.div>
+				)}
+
+				{projects.length === 0 && (
+					<motion.button
+						key='no-projects'
+						className='py-6 w-full text-center bg-[#1f1f1f] rounded-xl border border-[#272727] shadow-md transition-colors duration-300 hover:bg-secondary'
+						onClick={handleCreate}
+					>
+						<p className='text-gray-400'>Нет проектов. Создайте первый!</p>
+					</motion.button>
 				)}
 			</AnimatePresence>
 
-			{projects.length === 0 && (
-				<button className='py-6 w-full text-center bg-[#1f1f1f] rounded-xl border border-[#272727] shadow-md transition-colors duration-300 hover:bg-secondary'>
-					<p className='text-gray-400'>Нет проектов. Создайте первый!</p>
-				</button>
-			)}
+			<CreateEditProjectModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				project={editingProject}
+				availableTabs={tabs}
+			/>
 		</div>
 	)
 }

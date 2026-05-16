@@ -1,15 +1,38 @@
-import { IProject } from '@/lib/api/types'
 import { twMerge } from 'tailwind-merge'
+import toast from 'react-hot-toast'
+
+import { getFullImageUrl } from '@/lib/utils/getFullImageUrl'
+import { getErrorMessage } from '@/lib/utils/errorHandlers'
+
+import { Project } from '@/lib/api/types/project.types'
+
+import { useDeleteProject } from '@/lib/api/hooks/projects.hooks'
+import { Loader } from '@/components/ui/Loader'
 
 interface AdminProjectCardProps {
 	className?: string
-	project: IProject
+	project: Project
+	onEdit: (project: Project) => void
 }
 
 export const AdminProjectCard = ({
 	className,
 	project,
+	onEdit,
 }: AdminProjectCardProps) => {
+	const { mutateAsync: deleteProject, isPending: isDeleting } =
+		useDeleteProject()
+
+	const handleDelete = async (projectId: string) => {
+		try {
+			await deleteProject(projectId)
+			toast.success('Проект успешно удалён')
+		} catch (error) {
+			console.error(error)
+			toast.error(getErrorMessage(error))
+		}
+	}
+
 	return (
 		<div
 			key={project.id}
@@ -19,11 +42,10 @@ export const AdminProjectCard = ({
 				'hover:shadow-xl transition-shadow',
 			)}
 		>
-			{/* Превью */}
 			<div className='aspect-video bg-dark relative overflow-hidden'>
 				{project.src ? (
 					<img
-						src={project.src}
+						src={getFullImageUrl(project.src)}
 						alt={project.label}
 						className='w-full h-full object-cover'
 					/>
@@ -33,7 +55,6 @@ export const AdminProjectCard = ({
 					</div>
 				)}
 
-				{/* Статус бейдж */}
 				<div className='absolute top-3 right-3 pointer-events-none'>
 					<span
 						className={twMerge(
@@ -48,7 +69,6 @@ export const AdminProjectCard = ({
 				</div>
 			</div>
 
-			{/* Контент карточки */}
 			<div className='p-4 space-y-3'>
 				<div>
 					<h3 className='font-semibold text-white'>{project.label}</h3>
@@ -59,17 +79,24 @@ export const AdminProjectCard = ({
 					)}
 				</div>
 
-				{/* Действия */}
 				<div className='flex items-center justify-between pt-3 border-t border-gray-400'>
 					<span className='text-xs text-gray-400'>
 						#{project.id.slice(0, 6)}
 					</span>
 
 					<div className='flex items-center space-x-3'>
-						<button className='text-lg text-slate-400 hover:text-slate-200'>
+						<button
+							className='text-lg text-slate-400 hover:text-slate-200'
+							onClick={() => onEdit(project)}
+						>
 							✎
 						</button>
-						<button className='text-lg'>🗑️</button>
+						<button
+							className='min-w-[24.72px] relative text-lg'
+							onClick={() => handleDelete(project.id)}
+						>
+							{isDeleting ? <Loader size='sm' /> : '🗑️'}
+						</button>
 					</div>
 				</div>
 

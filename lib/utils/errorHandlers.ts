@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { ApiErrorResponse } from '../api/axios'
 
 export const handleLoginError = (error: unknown): string => {
@@ -17,4 +17,20 @@ export const handleLoginError = (error: unknown): string => {
 	if (!error.response) return 'Нет соединения с сервером'
 
 	return 'Что-то пошло не так, попробуйте позже'
+}
+
+export function getErrorMessage(error: unknown): string {
+	if (
+		axios.isAxiosError<ApiErrorResponse>(error) &&
+		error.response?.data?.message
+	) {
+		const message = error.response.data.message
+		return Array.isArray(message) ? message.join(', ') : message
+	}
+
+	if (error instanceof Error) {
+		return error.message
+	}
+
+	return 'Произошла неизвестная ошибка'
 }

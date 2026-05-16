@@ -1,51 +1,23 @@
-import { MOCK_PROJECTS, MOCK_TABS } from '@/constants/mock/admin.mock'
 import { create } from 'zustand'
-import { IProject, ITab } from '../api/types'
-
-// export interface ITab {
-// 	id: string
-// 	label: string
-// 	slug: string
-// 	order: number
-// 	isActive: boolean
-// 	createdAt: string
-// 	updatedAt: string
-// }
-
-// export interface IProject {
-// 	id: string
-// 	label: string
-// 	slug: string
-// 	description: string | null
-// 	src: string
-// 	href: string | null
-// 	order: number
-// 	isActive: boolean
-// 	tabId: string
-// 	createdAt: string
-// 	updatedAt: string
-// }
-
-export type AdminSection = 'tabs' | 'projects'
+import { CreateTabRequest, Tab } from '../api/types/tabs.types'
+import { CreateProjectRequest, Project } from '../api/types/project.types'
+import { MOCK_PROJECTS, MOCK_TABS } from '@/constants/mock/admin.mock'
 
 interface AdminState {
-	activeSecton: AdminSection
-	setActiveSection: (section: AdminSection) => void
+	activeSection: 'tabs' | 'projects'
+	setActiveSection: (section: 'tabs' | 'projects') => void
 
-	tabs: ITab[]
-	projects: IProject[]
+	tabs: Tab[]
+	projects: Project[]
 
-	addTab: (tab: Omit<ITab, 'id' | 'createdAt' | 'updatedAt'>) => void
-	addProject: (
-		project: Omit<IProject, 'id' | 'createdAt' | 'updatedAt'>,
-	) => void
+	addTab: (tab: CreateTabRequest) => void
+	addProject: (project: CreateProjectRequest) => void
 }
 
 export const useAdminStore = create<AdminState>((set) => ({
-	activeSecton: 'tabs',
-	setActiveSection: (section) => set({ activeSecton: section }),
+	activeSection: 'tabs',
+	setActiveSection: (section) => set({ activeSection: section }),
 
-	// Моковые данные
 	tabs: MOCK_TABS,
 	projects: MOCK_PROJECTS,
 
@@ -58,7 +30,9 @@ export const useAdminStore = create<AdminState>((set) => ({
 					id: crypto.randomUUID(),
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString(),
-				},
+					isActive: tab.isActive ?? true,
+					order: tab.order ?? 0,
+				} satisfies Tab,
 			],
 		})),
 
@@ -71,7 +45,10 @@ export const useAdminStore = create<AdminState>((set) => ({
 					id: crypto.randomUUID(),
 					createdAt: new Date().toISOString(),
 					updatedAt: new Date().toISOString(),
-				},
+					href: project.href ?? null,
+					order: project.order ?? 0,
+					isActive: project.isActive ?? true,
+				} satisfies Project,
 			],
 		})),
 }))

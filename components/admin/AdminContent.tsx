@@ -28,13 +28,13 @@ const ContentChangeAnimation: Variants = {
 }
 
 export const AdminContent = ({ className }: AdminContentProps) => {
-	const { activeSecton } = useAdminStore()
+	const { activeSection } = useAdminStore()
 
 	return (
 		<div className={className}>
 			<Container>
 				<AnimatePresence mode='wait'>
-					{activeSecton === 'tabs' && (
+					{activeSection === 'tabs' && (
 						<motion.div
 							variants={ContentChangeAnimation}
 							key={'tabs-content'}
@@ -45,7 +45,7 @@ export const AdminContent = ({ className }: AdminContentProps) => {
 							<AdminTabsContent />
 						</motion.div>
 					)}
-					{activeSecton === 'projects' && (
+					{activeSection === 'projects' && (
 						<motion.div
 							variants={ContentChangeAnimation}
 							key={'projects-content'}

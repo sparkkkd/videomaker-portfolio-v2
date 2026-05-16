@@ -1,15 +1,62 @@
 'use client'
 
-import { useAdminStore } from '@/lib/store/admin.store'
 import { twMerge } from 'tailwind-merge'
+import { useState } from 'react'
+
+import { Tab } from '@/lib/api/types/tabs.types'
+import { useTabs } from '@/lib/api/hooks/tabs.hooks'
+
 import { AdminTabs } from './AdminTabs'
+import { CreateEditTabModal } from './CreateEditTabModal'
 
 interface AdminTabsContentProps {
 	className?: string
 }
 
 export const AdminTabsContent = ({ className }: AdminTabsContentProps) => {
-	const { tabs } = useAdminStore()
+	const { data: tabs = [], isLoading, error } = useTabs()
+
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [editingTab, setEditingTab] = useState<Tab | null>(null)
+
+	const handleCreate = () => {
+		setEditingTab(null)
+		setIsModalOpen(true)
+	}
+
+	const handleEdit = (tab: Tab) => {
+		setEditingTab(tab)
+		setIsModalOpen(true)
+	}
+
+	if (isLoading) {
+		return (
+			<div
+				className={twMerge(
+					className,
+					'mt-5 flex items-center justify-center py-12',
+				)}
+			>
+				<div className='animate-spin rounded-full h-8 w-8 border-4 border-accent border-t-transparent' />
+			</div>
+		)
+	}
+
+	if (error) {
+		return (
+			<div
+				className={twMerge(className, 'mt-5 text-center py-12 text-rose-400')}
+			>
+				<p>Ошибка загрузки табов: {error.message}</p>
+				<button
+					onClick={() => window.location.reload()}
+					className='mt-4 text-accent hover:underline'
+				>
+					Попробовать снова
+				</button>
+			</div>
+		)
+	}
 
 	return (
 		<div className={twMerge(className, 'mt-5 space-y-6')}>
@@ -27,13 +74,20 @@ export const AdminTabsContent = ({ className }: AdminTabsContentProps) => {
 						'hover:bg-accent/70 transition-colors',
 						'flex items-center space-x-2',
 					)}
+					onClick={handleCreate}
 				>
 					<span>+</span>
 					<span>Создать таб</span>
 				</button>
 			</div>
 
-			<AdminTabs tabs={tabs} />
+			<AdminTabs tabs={tabs} onEdit={handleEdit} />
+
+			<CreateEditTabModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				tab={editingTab}
+			/>
 		</div>
 	)
 }

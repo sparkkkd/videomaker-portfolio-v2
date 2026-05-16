@@ -1,7 +1,7 @@
-// constants/mock/admin.mock.ts
-import type { MockTab, MockProject } from '@/lib/store/admin.store'
+import { Project } from '@/lib/api/types/project.types'
+import { Tab } from '@/lib/api/types/tabs.types'
 
-export const MOCK_TABS: MockTab[] = [
+export const MOCK_TABS: Tab[] = [
 	{
 		id: '1',
 		label: 'Моушен-дизайн',
@@ -31,7 +31,7 @@ export const MOCK_TABS: MockTab[] = [
 	},
 ]
 
-export const MOCK_PROJECTS: MockProject[] = [
+export const MOCK_PROJECTS: Project[] = [
 	{
 		id: '101',
 		label: 'Промо-ролик для бренда',
