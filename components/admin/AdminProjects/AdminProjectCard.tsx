@@ -1,47 +1,75 @@
 import { twMerge } from 'tailwind-merge'
-import toast from 'react-hot-toast'
 
 import { getFullImageUrl } from '@/lib/utils/getFullImageUrl'
-import { getErrorMessage } from '@/lib/utils/errorHandlers'
-
 import { Project } from '@/lib/api/types/project.types'
 
-import { useDeleteProject } from '@/lib/api/hooks/projects.hooks'
 import { Loader } from '@/components/ui/Loader'
 
 interface AdminProjectCardProps {
 	className?: string
 	project: Project
+
 	onEdit: (project: Project) => void
+	onDelete?: () => void
+
+	isDeleting?: boolean
+
+	dragHandleProps?: {
+		onMouseDown?: (e: React.MouseEvent) => void
+		onTouchStart?: (e: React.TouchEvent) => void
+		[key: string]: unknown
+	}
+	orderBadge?: number
 }
 
 export const AdminProjectCard = ({
 	className,
 	project,
 	onEdit,
+	onDelete,
+	isDeleting,
+	dragHandleProps,
+	orderBadge,
 }: AdminProjectCardProps) => {
-	const { mutateAsync: deleteProject, isPending: isDeleting } =
-		useDeleteProject()
-
-	const handleDelete = async (projectId: string) => {
-		try {
-			await deleteProject(projectId)
-			toast.success('Проект успешно удалён')
-		} catch (error) {
-			console.error(error)
-			toast.error(getErrorMessage(error))
-		}
-	}
-
 	return (
 		<div
 			key={project.id}
 			className={twMerge(
 				className,
-				'bg-[#1f1f1f] rounded-xl shadow-lg border border-[#272727] overflow-hidden',
+				'relative bg-[#1f1f1f] rounded-xl shadow-lg border border-[#272727] overflow-hidden',
 				'hover:shadow-xl transition-shadow',
 			)}
 		>
+			<div className='absolute top-3 left-3 flex gap-3'>
+				{dragHandleProps && (
+					<button
+						{...dragHandleProps}
+						className='p-1.5 bg-black/50 hover:bg-black/70 rounded-lg z-10 text-white cursor-grab active:cursor-grabbing transition-colors'
+						aria-label='Перетащить'
+					>
+						<svg
+							className='w-4 h-4'
+							fill='none'
+							stroke='currentColor'
+							viewBox='0 0 24 24'
+						>
+							<path
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth={2}
+								d='M4 8h16M4 16h16'
+							/>
+						</svg>
+					</button>
+				)}
+
+				{orderBadge && (
+					<div className='px-2 py-1 bg-black/50 rounded text-xs text-white font-mono z-10'>
+						#{orderBadge}
+					</div>
+				)}
+			</div>
+
 			<div className='aspect-video bg-dark relative overflow-hidden'>
 				{project.src ? (
 					<img
@@ -80,9 +108,7 @@ export const AdminProjectCard = ({
 				</div>
 
 				<div className='flex items-center justify-between pt-3 border-t border-gray-400'>
-					<span className='text-xs text-gray-400'>
-						#{project.id.slice(0, 6)}
-					</span>
+					<span className='text-xs text-gray-400'>#{project.tab.label}</span>
 
 					<div className='flex items-center space-x-3'>
 						<button
@@ -93,7 +119,7 @@ export const AdminProjectCard = ({
 						</button>
 						<button
 							className='min-w-[24.72px] relative text-lg'
-							onClick={() => handleDelete(project.id)}
+							onClick={onDelete}
 						>
 							{isDeleting ? <Loader size='sm' /> : '🗑️'}
 						</button>

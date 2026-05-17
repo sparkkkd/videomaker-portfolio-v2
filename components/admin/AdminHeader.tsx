@@ -2,7 +2,7 @@
 
 import { twMerge } from 'tailwind-merge'
 
-import { AdminSection, useAdminStore } from '@/lib/store/admin.store'
+import { useAdminStore, AdminSections } from '@/lib/store/admin.store'
 import { auth } from '@/lib/auth/auth'
 
 import { Container } from '../Container'
@@ -11,13 +11,14 @@ interface AdminHeaderProps {
 	className?: string
 }
 
-const SECTIONS: { id: AdminSection; label: string }[] = [
+const SECTIONS: { id: AdminSections; label: string }[] = [
 	{ id: 'tabs', label: 'Табы' },
 	{ id: 'projects', label: 'Проекты' },
+	{ id: 'tabs-projects', label: 'Проекты по табам' },
 ]
 
 export const AdminHeader = ({ className }: AdminHeaderProps) => {
-	const { activeSecton, setActiveSection } = useAdminStore()
+	const { activeSection, setActiveSection } = useAdminStore()
 
 	const handleLogout = async () => {
 		await auth.logout()
@@ -34,7 +35,7 @@ export const AdminHeader = ({ className }: AdminHeaderProps) => {
 				<div className='flex justify-between'>
 					<nav className='flex gap-4'>
 						{SECTIONS.map((section) => {
-							const isActive = activeSecton === section.id
+							const isActive = activeSection === section.id
 							return (
 								<button
 									key={section.id}

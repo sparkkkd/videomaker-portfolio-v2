@@ -27,3 +27,5 @@ export interface UpdateTabRequest {
 	order?: number
 	isActive?: boolean
 }
+
+export type TabBrief = Pick<Tab, 'id' | 'label' | 'slug'>

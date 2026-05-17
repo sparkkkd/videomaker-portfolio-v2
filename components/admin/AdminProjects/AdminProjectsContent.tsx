@@ -2,8 +2,6 @@ import { twMerge } from 'tailwind-merge'
 import { useState } from 'react'
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 
-import Image from 'next/image'
-
 import { Project } from '@/lib/api/types/project.types'
 
 import { useProjects } from '@/lib/api/hooks/projects.hooks'
@@ -68,24 +66,28 @@ export const AdminProjectsContent = ({
 						Добавляйте и редактируйте работы в портфолио
 					</p>
 
-					<div className='mt-4 flex items-center gap-4'>
+					<div className='mt-4 w-fit flex items-center gap-1 bg-[#272727] p-1 rounded-lg'>
 						<button
-							className={twMerge(
-								'opacity-60 transition-opacity duration-300',
-								viewMode === 'grid' && 'opacity-100',
-							)}
 							onClick={() => setViewMode('grid')}
+							className={twMerge(
+								'px-3 py-1.5 text-sm font-medium rounded-md transition-all',
+								viewMode === 'grid'
+									? 'bg-[#1f1f1f] text-white shadow-sm'
+									: 'text-gray-400 hover:text-white',
+							)}
 						>
-							<Image src='/grid-icon.svg' alt='Сетка' width={25} height={25} />
+							Сетка
 						</button>
 						<button
-							className={twMerge(
-								'opacity-60 transition-opacity duration-300',
-								viewMode === 'list' && 'opacity-100',
-							)}
 							onClick={() => setViewMode('list')}
+							className={twMerge(
+								'px-3 py-1.5 text-sm font-medium rounded-md transition-all',
+								viewMode === 'list'
+									? 'bg-[#1f1f1f] text-white shadow-sm'
+									: 'text-gray-400 hover:text-white',
+							)}
 						>
-							<Image src='/list-icon.svg' alt='Список' width={25} height={25} />
+							Список
 						</button>
 					</div>
 				</div>

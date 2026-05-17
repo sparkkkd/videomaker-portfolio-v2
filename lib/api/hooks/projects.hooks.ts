@@ -19,6 +19,14 @@ export const useProjectById = (id: string) => {
 	})
 }
 
+export const useProjectsByTab = (tabId: string | null) => {
+	return useQuery({
+		queryKey: queryKeys.projects.list(tabId || undefined),
+		queryFn: () => projectsApi.getByTabId(tabId!),
+		enabled: !!tabId,
+	})
+}
+
 export const useCreateProject = () => {
 	const queryClient = useQueryClient()
 
@@ -50,6 +58,27 @@ export const useDeleteProject = () => {
 
 	return useMutation({
 		mutationFn: projectsApi.delete,
+		onSuccess: (_, deletedId) => {
+			queryClient.invalidateQueries({ queryKey: queryKeys.projects.all })
+
+			queryClient.removeQueries({
+				queryKey: queryKeys.projects.detail(deletedId),
+			})
+		},
+	})
+}
+
+export const useReorderProjects = () => {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: ({
+			projectIds,
+			tabId,
+		}: {
+			projectIds: string[]
+			tabId?: string
+		}) => projectsApi.reorder(projectIds, tabId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: queryKeys.projects.all })
 		},

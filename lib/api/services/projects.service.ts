@@ -9,10 +9,13 @@ export const projectsApi = {
 	getAll: () => api.get<Project[]>('/projects'),
 	getById: (id: string) => api.get<Project>(`/projects/${id}`),
 	getBySlug: (slug: string) => api.get<Project>(`/projects/${slug}`),
+	getByTabId: (tabId: string) => api.get<Project[]>(`/projects/tab/${tabId}`),
 	create: (data: CreateProjectRequest) => api.post<Project>('/projects', data),
 	update: (id: string, data: UpdateProjectRequest) =>
 		api.patch<Project>(`/projects/${id}`, data),
 	delete: (id: string) => api.delete<{ message: string }>(`/projects/${id}`),
-	reorder: (projectIds: string[]) =>
-		api.post<{ message: string }>('/projects/reorder', { projectIds }),
+	reorder: (projectIds: string[], tabId?: string) => {
+		const url = tabId ? `/projects/reorder?tabId=${tabId}` : '/projects/reorder'
+		return api.post<{ message: string }>(url, projectIds)
+	},
 }

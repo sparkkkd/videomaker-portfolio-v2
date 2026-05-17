@@ -16,5 +16,5 @@ export const tabsApi = {
 		api.patch<Tab[]>(`/tabs/${id}`, data),
 	delete: (id: string) => api.delete<{ message: string }>(`/tabs/${id}`),
 	reorder: (tabIds: string[]) =>
-		api.post<{ message: string }>('/tabs/reorder', { tabIds }),
+		api.post<{ message: string }>('/tabs/reorder', tabIds),
 }

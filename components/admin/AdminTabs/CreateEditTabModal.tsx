@@ -163,7 +163,7 @@ export function CreateEditTabModal({
 					</div>
 				</div>
 
-				{/* Buttons */}
+				{/* Actions */}
 				<div className='flex items-center justify-end gap-3 pt-4 border-t border-[#272727]'>
 					<button
 						type='button'

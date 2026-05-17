@@ -1,3 +1,5 @@
+import { TabBrief } from './tabs.types'
+
 export interface Project {
 	id: string
 	label: string
@@ -7,7 +9,7 @@ export interface Project {
 	href: string | null
 	order: number
 	isActive: boolean
-	tabId: string
+	tab: TabBrief
 	createdAt: string
 	updatedAt: string
 }
@@ -31,5 +33,4 @@ export interface UpdateProjectRequest {
 	href?: string | null
 	order?: number
 	isActive?: boolean
-	tabId?: string
 }

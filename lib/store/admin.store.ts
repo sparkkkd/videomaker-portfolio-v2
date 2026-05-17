@@ -3,12 +3,17 @@ import { CreateTabRequest, Tab } from '../api/types/tabs.types'
 import { CreateProjectRequest, Project } from '../api/types/project.types'
 import { MOCK_PROJECTS, MOCK_TABS } from '@/constants/mock/admin.mock'
 
+export type AdminSections = 'tabs' | 'projects' | 'tabs-projects'
+
 interface AdminState {
-	activeSection: 'tabs' | 'projects'
-	setActiveSection: (section: 'tabs' | 'projects') => void
+	activeSection: AdminSections
+	setActiveSection: (section: AdminSections) => void
 
 	tabs: Tab[]
 	projects: Project[]
+
+	selectedTabId: string | null
+	setSelectedTabId: (tabId: string | null) => void
 
 	addTab: (tab: CreateTabRequest) => void
 	addProject: (project: CreateProjectRequest) => void
@@ -20,6 +25,9 @@ export const useAdminStore = create<AdminState>((set) => ({
 
 	tabs: MOCK_TABS,
 	projects: MOCK_PROJECTS,
+
+	selectedTabId: null,
+	setSelectedTabId: (tabId) => set({ selectedTabId: tabId }),
 
 	addTab: (tab) =>
 		set((state) => ({

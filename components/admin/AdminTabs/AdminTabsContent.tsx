@@ -6,8 +6,8 @@ import { useState } from 'react'
 import { Tab } from '@/lib/api/types/tabs.types'
 import { useTabs } from '@/lib/api/hooks/tabs.hooks'
 
-import { AdminTabs } from './AdminTabs'
 import { CreateEditTabModal } from './CreateEditTabModal'
+import { AdminTabsSortable } from './AdminTabsSortable'
 
 interface AdminTabsContentProps {
 	className?: string
@@ -81,7 +81,7 @@ export const AdminTabsContent = ({ className }: AdminTabsContentProps) => {
 				</button>
 			</div>
 
-			<AdminTabs tabs={tabs} onEdit={handleEdit} />
+			<AdminTabsSortable tabs={tabs} onEdit={handleEdit} />
 
 			<CreateEditTabModal
 				isOpen={isModalOpen}

@@ -63,3 +63,14 @@ export const useDeleteTab = () => {
 		},
 	})
 }
+
+export const useReorderTabs = () => {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: tabsApi.reorder,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: queryKeys.tabs.list() })
+		},
+	})
+}

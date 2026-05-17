@@ -6,6 +6,7 @@ import { AnimatePresence, Variants } from 'framer-motion'
 import { AdminTabsContent } from './AdminTabs/AdminTabsContent'
 import { motion } from 'framer-motion'
 import { AdminProjectsContent } from './AdminProjects/AdminProjectsContent'
+import { AdminTabProjectsContent } from './AdminTabProjects/AdminTabProjectsContent'
 
 interface AdminContentProps {
 	className?: string
@@ -54,6 +55,17 @@ export const AdminContent = ({ className }: AdminContentProps) => {
 							exit='exit'
 						>
 							<AdminProjectsContent />
+						</motion.div>
+					)}
+					{activeSection === 'tabs-projects' && (
+						<motion.div
+							variants={ContentChangeAnimation}
+							key={'tabs-content'}
+							initial='initial'
+							animate='animate'
+							exit='exit'
+						>
+							<AdminTabProjectsContent />
 						</motion.div>
 					)}
 				</AnimatePresence>
