@@ -3,6 +3,8 @@ import localFont from 'next/font/local'
 import { Inter_Tight } from 'next/font/google'
 import { ViewTransitions } from 'next-view-transitions'
 
+import { QueryProvider } from '@/components/admin/QueryProvider'
+
 import './globals.css'
 
 const interTight = Inter_Tight({
@@ -35,18 +37,20 @@ export default function RootLayout({
 	children: React.ReactNode
 }>) {
 	return (
-		<ViewTransitions>
-			<html
-				lang='ru'
-				className={`
+		<QueryProvider>
+			<ViewTransitions>
+				<html
+					lang='ru'
+					className={`
 				${interTight.variable}
 				${drukFont.variable}
 				h-full antialiased`}
-			>
-				<body className='min-h-full flex flex-col font-sans bg-[#fff]'>
-					{children}
-				</body>
-			</html>
-		</ViewTransitions>
+				>
+					<body className='min-h-full flex flex-col font-sans bg-[#fff]'>
+						{children}
+					</body>
+				</html>
+			</ViewTransitions>
+		</QueryProvider>
 	)
 }

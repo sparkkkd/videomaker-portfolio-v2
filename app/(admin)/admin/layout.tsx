@@ -1,13 +1,14 @@
 'use client'
 
-import { AdminHeader } from '@/components/admin/AdminHeader'
-import { QueryProvider } from '@/components/admin/QueryProvider'
-import { AuthProvider } from '@/lib/auth/auth.provider'
 import { Toaster } from 'react-hot-toast'
+
+import { AuthProvider } from '@/lib/auth/auth.provider'
+
+import { AdminHeader } from '@/components/admin/AdminHeader'
 
 export default function layout({ children }: { children: React.ReactNode }) {
 	return (
-		<QueryProvider>
+		<>
 			<Toaster
 				position='top-right'
 				toastOptions={{
@@ -24,6 +25,6 @@ export default function layout({ children }: { children: React.ReactNode }) {
 					<main className='flex-1 p-4'>{children}</main>
 				</div>
 			</AuthProvider>
-		</QueryProvider>
+		</>
 	)
 }

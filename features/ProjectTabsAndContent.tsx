@@ -4,10 +4,13 @@ import { useState } from 'react'
 import { motion, AnimatePresence, Variants } from 'framer-motion'
 import { twMerge } from 'tailwind-merge'
 
+import { getFullImageUrl } from '@/lib/utils/getFullImageUrl'
+import { usePublicTabsWithProjects } from '@/lib/api/hooks/public/usePublicTabsWithProjects'
+
 import Image from 'next/image'
 
-import { TABS } from '@/constants/tabs.constant'
 import { Tabs } from '@/components/Tabs'
+import { Loader } from '@/components/ui/Loader'
 
 interface ProjectTabsAndContentProps {
 	className?: string
@@ -38,7 +41,11 @@ const contentVariants: Variants = {
 }
 
 const itemVariants: Variants = {
-	hidden: { opacity: 0, scale: 0.95, filter: 'blur(4px)' },
+	hidden: {
+		opacity: 0,
+		scale: 0.95,
+		filter: 'blur(4px)',
+	},
 	visible: {
 		opacity: 1,
 		origin: 2,
@@ -51,15 +58,52 @@ const itemVariants: Variants = {
 export const ProjectTabsAndContent = ({
 	className,
 }: ProjectTabsAndContentProps) => {
-	const [activeTabId, setActiveTabId] = useState<string>(TABS[0].id)
-	const activeTab = TABS.find((tab) => tab.id === activeTabId)
+	const { data: tabs = [], isLoading, error } = usePublicTabsWithProjects()
+
+	const [activeTabId, setActiveTabId] = useState<string | null>(null)
+	const activeTab = tabs.find((tab) => tab.id === activeTabId) || tabs[0]
+
+	if (isLoading) {
+		return (
+			<div
+				className={twMerge(
+					className,
+					'relative flex items-center justify-center py-20',
+				)}
+			>
+				<Loader size='lg' />
+			</div>
+		)
+	}
+
+	if (error) {
+		return (
+			<div className={twMerge(className, 'text-center py-20 text-white')}>
+				<p className='text-lg'>Не удалось загрузить проекты</p>
+				<button
+					onClick={() => window.location.reload()}
+					className='mt-4 text-accent hover:underline'
+				>
+					Попробовать снова
+				</button>
+			</div>
+		)
+	}
+
+	if (tabs.length === 0) {
+		return (
+			<div className={twMerge(className, 'text-center py-20 text-gray-400')}>
+				<p>Проекты пока не добавлены</p>
+			</div>
+		)
+	}
 
 	return (
 		<div className={twMerge(className, '')}>
 			<Tabs
 				className='mt-5 lg:mt-[45px]'
-				tabs={TABS.map(({ id, label }) => ({ id, label }))}
-				activeTabId={activeTabId}
+				tabs={tabs.map(({ id, label }) => ({ id, label }))}
+				activeTabId={activeTab?.id || ''}
 				onTabChange={setActiveTabId}
 			/>
 
@@ -85,7 +129,7 @@ export const ProjectTabsAndContent = ({
 						>
 							<div className='relative overflow-hidden rounded-[30px] bg-[#2A2A2A]'>
 								<Image
-									src={`/${src}`}
+									src={getFullImageUrl(src)}
 									alt={label}
 									width={569}
 									height={320}
