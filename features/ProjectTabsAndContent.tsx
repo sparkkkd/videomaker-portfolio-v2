@@ -127,15 +127,15 @@ export const ProjectTabsAndContent = ({
 							variants={itemVariants}
 							className='group cursor-pointer'
 						>
-							<div className='relative overflow-hidden rounded-[30px] bg-[#2A2A2A]'>
+							<div className='relative overflow-hidden rounded-[15px] bg-[#2A2A2A] lg:rounded-[30px]'>
 								<Image
 									src={getFullImageUrl(src)}
 									alt={label}
 									width={569}
 									height={320}
 									className={twMerge(
-										'w-full rounded-[15px] relative object-contain',
-										'lg:rounded-[30px] lg:transition-transform lg:duration-500 lg:group-hover:scale-105',
+										'w-full relative object-contain',
+										'lg:transition-transform lg:duration-500 lg:group-hover:scale-105',
 									)}
 									priority={false}
 								/>

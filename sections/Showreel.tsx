@@ -95,10 +95,11 @@ export const Showreel = ({ className }: ShowreelProps) => {
 
 			<Image
 				src='/showreel-bg.svg'
-				className='absolute left-1/2 top-1/2 -translate-1/2 select-none pointer-events-none object-contain z-0'
+				className='absolute  select-none pointer-events-none object-contain z-0'
 				alt='SHOWREEL'
-				width={1412}
-				height={756}
+				fill
+				// width={1412}
+				// height={756}
 			/>
 		</section>
 	)

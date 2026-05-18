@@ -53,12 +53,9 @@ export const Footer = ({ className }: FooterProps) => {
 
 			<Image
 				src='/footer-bg.svg'
-				width={1955}
-				height={720}
+				fill
 				alt=''
-				className={twMerge(
-					'absolute bottom-[84px] left-0 pointer-events-none select-none',
-				)}
+				className={twMerge('translate-y-[30%] pointer-events-none select-none')}
 			/>
 		</footer>
 	)
