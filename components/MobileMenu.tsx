@@ -131,9 +131,14 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 										</li>
 									))}
 									<li className='flex items-center gap-[10px]'>
-										<span className='text-2xl font-medium'>
+										<Link
+											className='text-2xl font-medium'
+											href='https://t.me/dm1017y'
+											target='_blank'
+											rel='noopener noreferrer'
+										>
 											Связаться со мной
-										</span>
+										</Link>
 										<Image
 											src='/arrow-top-right-black.svg'
 											alt='contact me'
@@ -149,17 +154,25 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 								className='mt-[40px] flex flex-col gap-[15px]'
 								variants={itemVariants}
 							>
-								{CONTACTS.map((item) => (
-									<li className='flex flex-col gap-[5px]' key={item.id}>
-										<span className='text-[12px] opacity-70'>{item.title}</span>
-										<Link
-											className='text-[18px] font-semibold'
-											href={item.href}
-										>
-											{item.label}
-										</Link>
-									</li>
-								))}
+								{CONTACTS.map((item) => {
+									const externalProps = external
+										? { target: '_blank', rel: 'noopener noreferrer' }
+										: {}
+									return (
+										<li className='flex flex-col gap-[5px]' key={item.id}>
+											<span className='text-[12px] opacity-70'>
+												{item.title}
+											</span>
+											<Link
+												className='text-[18px] font-semibold'
+												href={item.href}
+												{...externalProps}
+											>
+												{item.label}
+											</Link>
+										</li>
+									)
+								})}
 							</motion.ul>
 						</motion.div>
 					</>

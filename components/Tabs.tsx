@@ -1,10 +1,11 @@
 'use client'
 
+import { Tab } from '@/lib/api/types/tabs.types'
 import { twMerge } from 'tailwind-merge'
 
 interface TabsProps {
 	className?: string
-	tabs: { id: string; label: string }[]
+	tabs: Pick<Tab, 'label' | 'id' | 'isActive'>[]
 	activeTabId: string
 	onTabChange: (id: string) => void
 }
@@ -24,20 +25,25 @@ export const Tabs = ({
 				'xl:px-[30px]',
 			)}
 		>
-			{tabs.map(({ label, id }) => (
-				<div
-					key={id}
-					className={twMerge(
-						'py-[6px] px-[9px] rounded-[4px] text-[14px] text-white font-semibold leading-[90%] border-1 border-[#e0fd35] transition-all duration-300 cursor-pointer',
-						'md:text-base',
-						'lg:py-[15px] lg:px-5 lg:text-[20px] lg:rounded-[10px]',
-						id === activeTabId ? 'bg-[#E0FD35] text-black' : 'bg-transparent',
-					)}
-					onClick={() => onTabChange(id)}
-				>
-					{label}
-				</div>
-			))}
+			{tabs.map(
+				({ label, id, isActive }) =>
+					isActive && (
+						<div
+							key={id}
+							className={twMerge(
+								'py-[6px] px-[9px] rounded-[4px] text-[14px] text-white font-semibold leading-[90%] border-1 border-[#e0fd35] transition-all duration-300 cursor-pointer',
+								'md:text-base',
+								'lg:py-[15px] lg:px-5 lg:text-[20px] lg:rounded-[10px]',
+								id === activeTabId
+									? 'bg-[#E0FD35] text-black'
+									: 'bg-transparent',
+							)}
+							onClick={() => onTabChange(id)}
+						>
+							{label}
+						</div>
+					),
+			)}
 		</div>
 	)
 }

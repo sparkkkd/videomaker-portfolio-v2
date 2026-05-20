@@ -93,14 +93,16 @@ export const Navigation = ({ className }: NavigationProps) => {
 			</nav>
 
 			<Link
-				href='#'
+				href='https://t.me/dm1017y'
+				target='_blank'
+				rel='noopener noreferrer'
 				className={twMerge(
 					'hidden',
 					'md:ml-[30px] md:flex md:items-center md:gap-[10px]',
 					'lg:ml-[50px]',
 				)}
 			>
-				<span className='font-bold text-white text-base lg:text-2xl'>
+				<span className='font-bold text-white text-base lg:text-2xl hover:underline'>
 					Связаться со мной
 				</span>
 				<Image
@@ -135,6 +137,7 @@ const NavigationItem = ({
 				className={twMerge(
 					'lg:text-2xl',
 					isActive && 'text-[#CDFA03] font-bold',
+					!isActive && 'hover:text-primary transition-colors duration-300',
 				)}
 				onClick={(e) => {
 					if (pathname === item.href) return

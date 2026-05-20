@@ -63,6 +63,8 @@ export const ProjectTabsAndContent = ({
 	const [activeTabId, setActiveTabId] = useState<string | null>(null)
 	const activeTab = tabs.find((tab) => tab.id === activeTabId) || tabs[0]
 
+	console.log(activeTab?.projects)
+
 	if (isLoading) {
 		return (
 			<div
@@ -102,7 +104,7 @@ export const ProjectTabsAndContent = ({
 		<div className={twMerge(className, '')}>
 			<Tabs
 				className='mt-5 lg:mt-[45px]'
-				tabs={tabs.map(({ id, label }) => ({ id, label }))}
+				tabs={tabs.map(({ id, label, isActive }) => ({ id, label, isActive }))}
 				activeTabId={activeTab?.id || ''}
 				onTabChange={setActiveTabId}
 			/>
