@@ -1,4 +1,3 @@
-import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Inter_Tight } from 'next/font/google'
 import { ViewTransitions } from 'next-view-transitions'
@@ -25,11 +24,6 @@ const drukFont = localFont({
 	display: 'swap',
 	preload: true,
 })
-
-export const metadata: Metadata = {
-	title: 'Dmitriy Kuzmin',
-	description: 'Портфолио',
-}
 
 export default function RootLayout({
 	children,
