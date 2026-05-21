@@ -69,7 +69,7 @@ export function CreateEditProjectModal({
 					src: project.src,
 					href: project.href ?? undefined,
 					isActive: project.isActive,
-					tabId: project.tabId,
+					tabId: project.tab.id,
 				}
 			: {
 					label: '',
@@ -164,7 +164,7 @@ export function CreateEditProjectModal({
 					src: project.src,
 					href: project.href ?? '',
 					isActive: project.isActive,
-					tabId: project.tabId,
+					tabId: project.tab.id,
 				})
 				setPreviewUrl(project.src || null)
 			} else {
