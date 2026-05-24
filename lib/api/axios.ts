@@ -6,15 +6,12 @@ import axios, {
 	InternalAxiosRequestConfig,
 } from 'axios'
 
-import { auth } from '../auth/auth'
+let currentAccessToken: string | null = null
 
 export interface ApiClient {
 	get<T>(url: string, config?: AxiosRequestConfig): Promise<T>
-
 	post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
-
 	patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
-
 	delete<T>(url: string, config?: AxiosRequestConfig): Promise<T>
 }
 
@@ -32,51 +29,67 @@ type FailedQueueItem = {
 }
 
 const failedQueue: FailedQueueItem[] = []
-
 let isRefreshing = false
 
 const processQueue = (error: unknown, token: string | null = null) => {
-	failedQueue.forEach((request) => {
-		if (error) {
-			request.reject(error)
-
-			return
-		}
-
-		request.resolve(token!)
-	})
-
+	failedQueue.forEach((req) =>
+		error ? req.reject(error) : req.resolve(token!),
+	)
 	failedQueue.length = 0
 }
 
 const axiosInstance: AxiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	timeout: 10000,
-	withCredentials: true,
-	headers: {
-		'Content-Type': 'application/json',
+	headers: { 'Content-Type': 'application/json' },
+})
+
+axiosInstance.interceptors.request.use(
+	async (config: InternalAxiosRequestConfig) => {
+		if (config.headers?.Authorization) return config
+
+		if (typeof window !== 'undefined') {
+			if (currentAccessToken) {
+				config.headers.set('Authorization', `Bearer ${currentAccessToken}`)
+				return config
+			}
+			try {
+				const res = await fetch('/api/auth/session')
+				const session = await res.json()
+				if (session?.accessToken) {
+					currentAccessToken = session.accessToken
+					config.headers.set('Authorization', `Bearer ${currentAccessToken}`)
+				}
+			} catch {}
+		} else {
+			try {
+				const { auth } = await import('@/auth')
+				const session = await auth()
+				if (session?.accessToken && config.headers) {
+					config.headers.set('Authorization', `Bearer ${session.accessToken}`)
+				}
+			} catch {}
+		}
+
+		return config
 	},
-})
-
-axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-	const accessToken = auth.getAccessToken()
-
-	if (accessToken && config.headers) {
-		config.headers.Authorization = `Bearer ${accessToken}`
-	}
-
-	return config
-})
+)
 
 axiosInstance.interceptors.response.use(
-	(response: AxiosResponse) => response.data,
-
+	(res: AxiosResponse) => res.data,
 	async (error: AxiosError<ApiErrorResponse>) => {
 		const originalRequest = error.config as InternalAxiosRequestConfig & {
 			_retry?: boolean
 		}
 
 		if (error.response?.status !== 401 || originalRequest._retry) {
+			return Promise.reject(error)
+		}
+
+		if (originalRequest.url?.includes('/auth/refresh')) {
+			if (typeof window !== 'undefined') {
+				window.location.href = '/login'
+			}
 			return Promise.reject(error)
 		}
 
@@ -87,12 +100,10 @@ axiosInstance.interceptors.response.use(
 				failedQueue.push({
 					resolve: (token: string) => {
 						if (originalRequest.headers) {
-							originalRequest.headers.Authorization = `Bearer ${token}`
+							originalRequest.headers.set('Authorization', `Bearer ${token}`)
 						}
-
 						resolve(axiosInstance(originalRequest))
 					},
-
 					reject,
 				})
 			})
@@ -101,31 +112,42 @@ axiosInstance.interceptors.response.use(
 		isRefreshing = true
 
 		try {
-			const response = await axios.post<{
+			const sessionRes = await fetch('/api/auth/session')
+			const session = await sessionRes.json()
+			const refreshToken = session?.refreshToken
+
+			if (!refreshToken) throw new Error('No refresh token in session')
+
+			const { data } = await axios.post<{
 				accessToken: string
+				refreshToken: string
 			}>(
 				`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-				{},
-				{
-					withCredentials: true,
-				},
+				{ refreshToken },
+				{ headers: { 'Content-Type': 'application/json' } },
 			)
 
-			const newAccessToken = response.data.accessToken
+			currentAccessToken = data.accessToken
 
-			auth.setAccessToken(newAccessToken)
-
-			processQueue(null, newAccessToken)
+			processQueue(null, currentAccessToken)
 
 			if (originalRequest.headers) {
-				originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+				originalRequest.headers.set(
+					'Authorization',
+					`Bearer ${currentAccessToken}`,
+				)
 			}
 
 			return axiosInstance(originalRequest)
-		} catch (refreshError) {
-			processQueue(refreshError)
+		} catch (refreshError: unknown) {
+			const axiosError = refreshError as AxiosError<ApiErrorResponse>
+			console.error(
+				'Token refresh failed:',
+				axiosError?.response?.data || axiosError?.message,
+			)
 
-			auth.clear()
+			processQueue(refreshError)
+			currentAccessToken = null
 
 			if (typeof window !== 'undefined') {
 				window.location.href = '/login'
@@ -139,5 +161,4 @@ axiosInstance.interceptors.response.use(
 )
 
 export const api: ApiClient = axiosInstance
-
 export default axiosInstance

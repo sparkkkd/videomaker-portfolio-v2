@@ -2,8 +2,6 @@
 
 import { Toaster } from 'react-hot-toast'
 
-import { AuthProvider } from '@/lib/auth/auth.provider'
-
 import { AdminHeader } from '@/components/admin/AdminHeader'
 
 export default function layout({ children }: { children: React.ReactNode }) {
@@ -19,12 +17,12 @@ export default function layout({ children }: { children: React.ReactNode }) {
 					},
 				}}
 			/>
-			<AuthProvider>
-				<div className='min-h-screen bg-secondary flex flex-col'>
-					<AdminHeader />
-					<main className='flex-1 p-4'>{children}</main>
-				</div>
-			</AuthProvider>
+			{/* <AuthProvider> */}
+			<div className='min-h-screen bg-secondary flex flex-col'>
+				<AdminHeader />
+				<main className='flex-1 p-4'>{children}</main>
+			</div>
+			{/* </AuthProvider> */}
 		</>
 	)
 }

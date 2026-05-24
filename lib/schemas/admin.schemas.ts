@@ -15,7 +15,7 @@ export const tabSchema = z.object({
 
 export type TabFormData = z.infer<typeof tabSchema>
 
-export const projectSchema = z.object({
+const projectSchema = z.object({
 	label: z
 		.string()
 		.min(2, 'Минимум 2 символа')
@@ -51,5 +51,5 @@ export const projectCreateSchema = projectSchema.extend({
 		.optional(),
 })
 
-export type ProjectFormData = z.infer<typeof projectSchema>
+// export type ProjectFormData = z.infer<typeof projectSchema>
 export type ProjectCreateFormData = z.infer<typeof projectCreateSchema>

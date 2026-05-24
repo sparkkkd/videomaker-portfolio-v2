@@ -3,9 +3,9 @@
 import { twMerge } from 'tailwind-merge'
 
 import { useAdminStore, AdminSections } from '@/lib/store/admin.store'
-import { auth } from '@/lib/auth/auth'
 
 import { Container } from '../Container'
+import { signOut } from 'next-auth/react'
 
 interface AdminHeaderProps {
 	className?: string
@@ -21,7 +21,10 @@ export const AdminHeader = ({ className }: AdminHeaderProps) => {
 	const { activeSection, setActiveSection } = useAdminStore()
 
 	const handleLogout = async () => {
-		await auth.logout()
+		await signOut({
+			callbackUrl: '/login',
+			redirect: true,
+		})
 	}
 
 	return (

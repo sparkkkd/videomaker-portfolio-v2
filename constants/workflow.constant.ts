@@ -1,4 +1,4 @@
-export interface BaseWorkflow {
+interface BaseWorkflow {
 	id: string
 }
 

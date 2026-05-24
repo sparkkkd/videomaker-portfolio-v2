@@ -9,7 +9,7 @@ interface LanguageGaugeProps {
 	alt: string
 }
 
-export const LanguageGauge = ({
+const LanguageGauge = ({
 	className,
 	language,
 	level,

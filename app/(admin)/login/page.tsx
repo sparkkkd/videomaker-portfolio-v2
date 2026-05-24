@@ -7,15 +7,13 @@ import { useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import { z } from 'zod'
 import { motion } from 'framer-motion'
-
-import { api } from '@/lib/api/axios'
-import { ITokenResponse } from '@/lib/api/types'
-import { auth } from '@/lib/auth/auth'
+import { signIn } from 'next-auth/react'
 
 import Image from 'next/image'
 
-import { LoginField } from '@/components/admin/LoginField'
 import { handleLoginError } from '@/lib/utils/errorHandlers'
+
+import { LoginField } from '@/components/admin/LoginField'
 
 const loginSchema = z.object({
 	email: z.string().email('Некорректный email'),
@@ -50,16 +48,24 @@ export default function Login() {
 			setLoading(true)
 
 			try {
-				const response = await api.post<ITokenResponse>('/auth/login', data, {
-					headers: {
-						'content-type': 'application/json',
-					},
+				console.log('start signIn')
+
+				const result = await signIn('credentials', {
+					email: data.email,
+					password: data.password,
+					redirect: false,
 				})
 
-				auth.setAccessToken(response.accessToken)
+				console.log(result)
 
-				router.replace('/admin')
+				if (result?.error) {
+					setError('Неверный email или пароль')
+				} else {
+					router.replace('/admin')
+					router.refresh()
+				}
 			} catch (error: unknown) {
+				console.log(error)
 				setError(handleLoginError(error))
 			} finally {
 				setLoading(false)

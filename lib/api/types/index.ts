@@ -4,4 +4,5 @@ export * from './uploads.types'
 
 export interface ITokenResponse {
 	accessToken: string
+	refreshToken: string
 }
