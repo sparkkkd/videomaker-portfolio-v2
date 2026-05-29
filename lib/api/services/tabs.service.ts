@@ -1,4 +1,4 @@
-import { api } from '../axios'
+import { api, publicApi } from '../axios'
 import {
 	CreateTabRequest,
 	Tab,
@@ -9,11 +9,11 @@ import {
 export const tabsApi = {
 	getAll: () => api.get<Tab[]>('/tabs'),
 	getAllWithProjects: () =>
-		api.get<TabWithProjects[]>('/tabs/with-projects', {
-			skipAuth: true,
-		}),
-	getById: (id: string) => api.get<TabWithProjects[]>(`/tabs/${id}`),
-	getBySlug: (slug: string) => api.get<TabWithProjects[]>(`/tabs/${slug}`),
+		publicApi.get<TabWithProjects[]>('/tabs/with-projects'),
+	getById: (id: string) => publicApi.get<TabWithProjects[]>(`/tabs/${id}`),
+	getBySlug: (slug: string) =>
+		publicApi.get<TabWithProjects[]>(`/tabs/${slug}`),
+
 	create: (data: CreateTabRequest) => api.post<Tab[]>('/tabs', data),
 	update: (id: string, data: UpdateTabRequest) =>
 		api.patch<Tab[]>(`/tabs/${id}`, data),

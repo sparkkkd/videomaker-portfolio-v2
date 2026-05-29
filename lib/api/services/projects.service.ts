@@ -1,4 +1,4 @@
-import { api } from '../axios'
+import { api, publicApi } from '../axios'
 import {
 	CreateProjectRequest,
 	Project,
@@ -6,10 +6,12 @@ import {
 } from '../types/project.types'
 
 export const projectsApi = {
-	getAll: () => api.get<Project[]>('/projects'),
-	getById: (id: string) => api.get<Project>(`/projects/${id}`),
-	getBySlug: (slug: string) => api.get<Project>(`/projects/${slug}`),
-	getByTabId: (tabId: string) => api.get<Project[]>(`/projects/tab/${tabId}`),
+	getAll: () => publicApi.get<Project[]>('/projects'),
+	getById: (id: string) => publicApi.get<Project>(`/projects/${id}`),
+	getBySlug: (slug: string) => publicApi.get<Project>(`/projects/${slug}`),
+	getByTabId: (tabId: string) =>
+		publicApi.get<Project[]>(`/projects/tab/${tabId}`),
+
 	create: (data: CreateProjectRequest) => api.post<Project>('/projects', data),
 	update: (id: string, data: UpdateProjectRequest) =>
 		api.patch<Project>(`/projects/${id}`, data),

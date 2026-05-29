@@ -1,19 +1,22 @@
 import axios, {
 	AxiosError,
 	AxiosInstance,
-	AxiosRequestConfig,
 	AxiosResponse,
 	InternalAxiosRequestConfig,
 } from 'axios'
 
-let currentAccessToken: string | null = null
+export const publicApi: AxiosInstance = axios.create({
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	timeout: 10000,
+	headers: { 'Content-Type': 'application/json' },
+})
 
-export interface ApiClient {
-	get<T>(url: string, config?: AxiosRequestConfig): Promise<T>
-	post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
-	patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
-	delete<T>(url: string, config?: AxiosRequestConfig): Promise<T>
-}
+publicApi.interceptors.response.use(
+	(res: AxiosResponse) => res.data,
+	(error: AxiosError) => Promise.reject(error),
+)
+
+let currentAccessToken: string | null = null
 
 export interface ApiErrorResponse {
 	statusCode: number
@@ -38,20 +41,15 @@ const processQueue = (error: unknown, token: string | null = null) => {
 	failedQueue.length = 0
 }
 
-const axiosInstance: AxiosInstance = axios.create({
+const privateApi: AxiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	timeout: 10000,
 	headers: { 'Content-Type': 'application/json' },
 })
 
-axiosInstance.interceptors.request.use(
+privateApi.interceptors.request.use(
 	async (config: InternalAxiosRequestConfig) => {
 		if (config.headers?.Authorization) return config
-
-		if (config.skipAuth) {
-			delete config.skipAuth
-			return config
-		}
 
 		if (typeof window !== 'undefined') {
 			if (currentAccessToken) {
@@ -68,10 +66,12 @@ axiosInstance.interceptors.request.use(
 			} catch {}
 		} else {
 			try {
-				const { auth } = await import('@/auth')
-				const session = await auth()
-				if (session?.accessToken && config.headers) {
-					config.headers.set('Authorization', `Bearer ${session.accessToken}`)
+				const authModule = await import('@/auth')
+				if (authModule?.auth) {
+					const session = await authModule.auth()
+					if (session?.accessToken && config.headers) {
+						config.headers.set('Authorization', `Bearer ${session.accessToken}`)
+					}
 				}
 			} catch {}
 		}
@@ -80,7 +80,7 @@ axiosInstance.interceptors.request.use(
 	},
 )
 
-axiosInstance.interceptors.response.use(
+privateApi.interceptors.response.use(
 	(res: AxiosResponse) => res.data,
 	async (error: AxiosError<ApiErrorResponse>) => {
 		const originalRequest = error.config as InternalAxiosRequestConfig & {
@@ -92,9 +92,7 @@ axiosInstance.interceptors.response.use(
 		}
 
 		if (originalRequest.url?.includes('/auth/refresh')) {
-			if (typeof window !== 'undefined') {
-				window.location.href = '/login'
-			}
+			if (typeof window !== 'undefined') window.location.href = '/login'
 			return Promise.reject(error)
 		}
 
@@ -104,10 +102,9 @@ axiosInstance.interceptors.response.use(
 			return new Promise((resolve, reject) => {
 				failedQueue.push({
 					resolve: (token: string) => {
-						if (originalRequest.headers) {
+						if (originalRequest.headers)
 							originalRequest.headers.set('Authorization', `Bearer ${token}`)
-						}
-						resolve(axiosInstance(originalRequest))
+						resolve(privateApi(originalRequest))
 					},
 					reject,
 				})
@@ -120,20 +117,15 @@ axiosInstance.interceptors.response.use(
 			const sessionRes = await fetch('/api/auth/session')
 			const session = await sessionRes.json()
 			const refreshToken = session?.refreshToken
+			if (!refreshToken) throw new Error('No refresh token')
 
-			if (!refreshToken) throw new Error('No refresh token in session')
-
-			const { data } = await axios.post<{
-				accessToken: string
-				refreshToken: string
-			}>(
+			const { data } = await axios.post<{ accessToken: string }>(
 				`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
 				{ refreshToken },
 				{ headers: { 'Content-Type': 'application/json' } },
 			)
 
 			currentAccessToken = data.accessToken
-
 			processQueue(null, currentAccessToken)
 
 			if (originalRequest.headers) {
@@ -143,21 +135,13 @@ axiosInstance.interceptors.response.use(
 				)
 			}
 
-			return axiosInstance(originalRequest)
+			return privateApi(originalRequest)
 		} catch (refreshError: unknown) {
 			const axiosError = refreshError as AxiosError<ApiErrorResponse>
-			console.error(
-				'Token refresh failed:',
-				axiosError?.response?.data || axiosError?.message,
-			)
-
+			console.error('Refresh failed:', axiosError?.response?.data)
 			processQueue(refreshError)
 			currentAccessToken = null
-
-			if (typeof window !== 'undefined') {
-				window.location.href = '/login'
-			}
-
+			if (typeof window !== 'undefined') window.location.href = '/login'
 			return Promise.reject(refreshError)
 		} finally {
 			isRefreshing = false
@@ -165,5 +149,5 @@ axiosInstance.interceptors.response.use(
 	},
 )
 
-export const api: ApiClient = axiosInstance
-export default axiosInstance
+export const api = privateApi
+export default privateApi
