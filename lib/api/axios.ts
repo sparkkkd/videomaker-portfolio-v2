@@ -84,16 +84,6 @@ privateInstance.interceptors.request.use(
 					config.headers.set('Authorization', `Bearer ${currentAccessToken}`)
 				}
 			} catch {}
-		} else {
-			try {
-				const authModule = await import('@/auth')
-				if (authModule?.auth) {
-					const session = await authModule.auth()
-					if (session?.accessToken && config.headers) {
-						config.headers.set('Authorization', `Bearer ${session.accessToken}`)
-					}
-				}
-			} catch {}
 		}
 
 		return config
