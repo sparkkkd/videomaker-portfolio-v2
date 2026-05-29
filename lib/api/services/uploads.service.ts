@@ -1,4 +1,4 @@
-import { api } from '../axios'
+import { publicApi } from '../axios'
 import { UploadResponse } from '../types/uploads.types'
 
 export const uploadsApi = {
@@ -7,7 +7,7 @@ export const uploadsApi = {
 		formData.append('file', file)
 		formData.append('folder', folder)
 
-		return api.post<UploadResponse>(`/uploads/${folder}`, formData, {
+		return publicApi.post<UploadResponse>(`/uploads/${folder}`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},

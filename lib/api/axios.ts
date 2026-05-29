@@ -1,22 +1,10 @@
 import axios, {
 	AxiosError,
 	AxiosInstance,
+	AxiosRequestConfig,
 	AxiosResponse,
 	InternalAxiosRequestConfig,
 } from 'axios'
-
-export const publicApi: AxiosInstance = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL,
-	timeout: 10000,
-	headers: { 'Content-Type': 'application/json' },
-})
-
-publicApi.interceptors.response.use(
-	(res: AxiosResponse) => res.data,
-	(error: AxiosError) => Promise.reject(error),
-)
-
-let currentAccessToken: string | null = null
 
 export interface ApiErrorResponse {
 	statusCode: number
@@ -30,6 +18,42 @@ type FailedQueueItem = {
 	resolve: (token: string) => void
 	reject: (error: unknown) => void
 }
+interface ApiClient {
+	get<T>(url: string, config?: AxiosRequestConfig): Promise<T>
+	post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
+	patch<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>
+	delete<T>(url: string, config?: AxiosRequestConfig): Promise<T>
+}
+
+const createApiClient = (instance: AxiosInstance): ApiClient => ({
+	get: <T>(url: string, config?: AxiosRequestConfig) =>
+		instance.get<T>(url, config).then((res: AxiosResponse<T>) => res.data),
+	post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+		instance
+			.post<T>(url, data, config)
+			.then((res: AxiosResponse<T>) => res.data),
+	patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
+		instance
+			.patch<T>(url, data, config)
+			.then((res: AxiosResponse<T>) => res.data),
+	delete: <T>(url: string, config?: AxiosRequestConfig) =>
+		instance.delete<T>(url, config).then((res: AxiosResponse<T>) => res.data),
+})
+
+const publicInstance: AxiosInstance = axios.create({
+	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	timeout: 10000,
+	headers: { 'Content-Type': 'application/json' },
+})
+
+publicInstance.interceptors.response.use(
+	(res: AxiosResponse) => res.data,
+	(error: AxiosError) => Promise.reject(error),
+)
+
+export const publicApi = createApiClient(publicInstance)
+
+let currentAccessToken: string | null = null
 
 const failedQueue: FailedQueueItem[] = []
 let isRefreshing = false
@@ -41,13 +65,13 @@ const processQueue = (error: unknown, token: string | null = null) => {
 	failedQueue.length = 0
 }
 
-const privateApi: AxiosInstance = axios.create({
+const privateInstance: AxiosInstance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_API_URL,
 	timeout: 10000,
 	headers: { 'Content-Type': 'application/json' },
 })
 
-privateApi.interceptors.request.use(
+privateInstance.interceptors.request.use(
 	async (config: InternalAxiosRequestConfig) => {
 		if (config.headers?.Authorization) return config
 
@@ -80,7 +104,7 @@ privateApi.interceptors.request.use(
 	},
 )
 
-privateApi.interceptors.response.use(
+privateInstance.interceptors.response.use(
 	(res: AxiosResponse) => res.data,
 	async (error: AxiosError<ApiErrorResponse>) => {
 		const originalRequest = error.config as InternalAxiosRequestConfig & {
@@ -104,7 +128,7 @@ privateApi.interceptors.response.use(
 					resolve: (token: string) => {
 						if (originalRequest.headers)
 							originalRequest.headers.set('Authorization', `Bearer ${token}`)
-						resolve(privateApi(originalRequest))
+						resolve(privateInstance(originalRequest))
 					},
 					reject,
 				})
@@ -135,7 +159,7 @@ privateApi.interceptors.response.use(
 				)
 			}
 
-			return privateApi(originalRequest)
+			return privateInstance(originalRequest)
 		} catch (refreshError: unknown) {
 			const axiosError = refreshError as AxiosError<ApiErrorResponse>
 			console.error('Refresh failed:', axiosError?.response?.data)
@@ -149,5 +173,5 @@ privateApi.interceptors.response.use(
 	},
 )
 
-export const api = privateApi
-export default privateApi
+export const api = createApiClient(privateInstance)
+export default api
