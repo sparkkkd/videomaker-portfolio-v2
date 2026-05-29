@@ -48,15 +48,11 @@ export default function Login() {
 			setLoading(true)
 
 			try {
-				console.log('start signIn')
-
 				const result = await signIn('credentials', {
 					email: data.email,
 					password: data.password,
 					redirect: false,
 				})
-
-				console.log(result)
 
 				if (result?.error) {
 					setError('Неверный email или пароль')
@@ -65,7 +61,6 @@ export default function Login() {
 					router.refresh()
 				}
 			} catch (error: unknown) {
-				console.log(error)
 				setError(handleLoginError(error))
 			} finally {
 				setLoading(false)

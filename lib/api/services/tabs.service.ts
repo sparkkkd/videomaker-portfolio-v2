@@ -7,7 +7,7 @@ import {
 } from '../types/tabs.types'
 
 export const tabsApi = {
-	getAll: () => api.get<Tab[]>('/tabs'),
+	getAll: () => publicApi.get<Tab[]>('/tabs'),
 	getAllWithProjects: () =>
 		publicApi.get<TabWithProjects[]>('/tabs/with-projects'),
 	getById: (id: string) => publicApi.get<TabWithProjects[]>(`/tabs/${id}`),

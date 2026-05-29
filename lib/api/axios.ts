@@ -27,17 +27,13 @@ interface ApiClient {
 
 const createApiClient = (instance: AxiosInstance): ApiClient => ({
 	get: <T>(url: string, config?: AxiosRequestConfig) =>
-		instance.get<T>(url, config).then((res: AxiosResponse<T>) => res.data),
+		instance.get<T>(url, config) as Promise<T>,
 	post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-		instance
-			.post<T>(url, data, config)
-			.then((res: AxiosResponse<T>) => res.data),
+		instance.post<T>(url, data, config) as Promise<T>,
 	patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-		instance
-			.patch<T>(url, data, config)
-			.then((res: AxiosResponse<T>) => res.data),
+		instance.patch<T>(url, data, config) as Promise<T>,
 	delete: <T>(url: string, config?: AxiosRequestConfig) =>
-		instance.delete<T>(url, config).then((res: AxiosResponse<T>) => res.data),
+		instance.delete<T>(url, config) as Promise<T>,
 })
 
 const publicInstance: AxiosInstance = axios.create({
