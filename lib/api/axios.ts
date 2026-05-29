@@ -48,6 +48,11 @@ axiosInstance.interceptors.request.use(
 	async (config: InternalAxiosRequestConfig) => {
 		if (config.headers?.Authorization) return config
 
+		if (config.skipAuth) {
+			delete config.skipAuth
+			return config
+		}
+
 		if (typeof window !== 'undefined') {
 			if (currentAccessToken) {
 				config.headers.set('Authorization', `Bearer ${currentAccessToken}`)
