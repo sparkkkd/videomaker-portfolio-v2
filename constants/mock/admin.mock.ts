@@ -55,7 +55,7 @@ export const MOCK_PROJECTS: Project[] = [
 		slug: 'animatsiya-logotipa',
 		description: 'Динамичный логотип для презентации',
 		src: '/project-2.jpg',
-		href: null,
+		href: 'https://vimeo.com/123456',
 		order: 1,
 		isActive: false,
 		tab: {
