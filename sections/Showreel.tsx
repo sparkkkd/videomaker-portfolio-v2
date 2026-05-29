@@ -13,6 +13,24 @@ interface ShowreelProps {
 	className?: string
 }
 
+const videoJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'VideoObject',
+	name: 'Шоурил работ — Дмитрий Кузьмин',
+	description:
+		'Подборка лучших проектов по видеосъёмке, монтажу и motion design',
+	thumbnailUrl: 'https://dmitrikuzmin.ru/showreel-preview.jpg',
+	uploadDate: '2024-12-22',
+	duration: 'PT2M12S',
+	contentUrl: 'https://vimeo.com/1041491730',
+	embedUrl: 'https://player.vimeo.com/video/1041491730',
+	interactionStatistic: {
+		'@type': 'InteractionCounter',
+		interactionType: 'https://schema.org/WatchAction',
+		userInteractionCount: 0,
+	},
+}
+
 export const Showreel = ({ className }: ShowreelProps) => {
 	const [isPlaying, setIsPlaying] = useState<boolean>(false)
 	const videoRef = useRef<HTMLVideoElement>(null)
@@ -33,6 +51,11 @@ export const Showreel = ({ className }: ShowreelProps) => {
 				'md:mt-[-110px] md:mb-[-70px]',
 			)}
 		>
+			<script
+				type='application/ld+json'
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
+			/>
+
 			<Container>
 				<div className='w-full relative aspect-[16/9]'>
 					<Image
@@ -51,6 +74,15 @@ export const Showreel = ({ className }: ShowreelProps) => {
 								key='preview'
 								className='w-[80%] left-[10%] top-[6%] cursor-pointer absolute inset-0 z-[12]'
 								onClick={handleVideoPlay}
+								role='button'
+								tabIndex={0}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										e.preventDefault()
+										handleVideoPlay()
+									}
+								}}
+								aria-label='Воспроизвести шоурил'
 								initial={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
 								animate={{
 									opacity: 1,
@@ -64,7 +96,7 @@ export const Showreel = ({ className }: ShowreelProps) => {
 								}}
 								transition={{ duration: 0.6, ease: 'easeInOut' }}
 							>
-								<motion.img
+								<Image
 									src='/showreel-preview.jpg'
 									className='w-full absolute left-0 top-0 object-contain'
 									alt='Press to play'
@@ -84,8 +116,9 @@ export const Showreel = ({ className }: ShowreelProps) => {
 								src='https://player.vimeo.com/video/1041491730?autoplay=1&loop=1&mute=1&title=0&byline=0&portrait=0&controls=1'
 								allow='autoplay; fullscreen; picture-in-picture; clipboard-write'
 								allowFullScreen
-								// loading='eager'
 								title='Showreel video'
+								referrerPolicy='no-referrer-when-downgrade'
+								loading='lazy'
 							/>
 							<div className='absolute inset-0 top-[-4%] h-[110%] bg-black z-0' />
 						</div>
@@ -95,11 +128,9 @@ export const Showreel = ({ className }: ShowreelProps) => {
 
 			<Image
 				src='/showreel-bg.svg'
-				className='absolute  select-none pointer-events-none object-contain z-0'
+				className='absolute select-none pointer-events-none object-contain z-0'
 				alt='SHOWREEL'
 				fill
-				// width={1412}
-				// height={756}
 			/>
 		</section>
 	)

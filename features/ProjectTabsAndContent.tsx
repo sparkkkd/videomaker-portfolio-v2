@@ -11,6 +11,7 @@ import Image from 'next/image'
 
 import { Tabs } from '@/components/Tabs'
 import { Loader } from '@/components/ui/Loader'
+import Link from 'next/link'
 
 interface ProjectTabsAndContentProps {
 	className?: string
@@ -62,8 +63,6 @@ export const ProjectTabsAndContent = ({
 
 	const [activeTabId, setActiveTabId] = useState<string | null>(null)
 	const activeTab = tabs.find((tab) => tab.id === activeTabId) || tabs[0]
-
-	console.log(activeTab?.projects)
 
 	if (isLoading) {
 		return (
@@ -123,13 +122,18 @@ export const ProjectTabsAndContent = ({
 						'xl:mt-[60px]',
 					)}
 				>
-					{activeTab?.projects.map(({ id, label, src }) => (
+					{activeTab?.projects.map(({ id, label, src, href }) => (
 						<motion.div
 							key={id}
 							variants={itemVariants}
 							className='group cursor-pointer'
 						>
-							<div className='relative overflow-hidden rounded-[15px] bg-[#2A2A2A] lg:rounded-[30px]'>
+							<Link
+								href={href}
+								target='_blank'
+								rel='noopener noreferrer'
+								className='relative overflow-hidden rounded-[15px] bg-[#2A2A2A] lg:rounded-[30px]'
+							>
 								<Image
 									src={getFullImageUrl(src)}
 									alt={label}
@@ -140,8 +144,9 @@ export const ProjectTabsAndContent = ({
 										'lg:transition-transform lg:duration-500 lg:group-hover:scale-105',
 									)}
 									priority={false}
+									loading='lazy'
 								/>
-							</div>
+							</Link>
 							<h4
 								className={twMerge(
 									'mt-[10px] text-[14px] text-white leading-none',

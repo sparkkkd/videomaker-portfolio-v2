@@ -6,12 +6,12 @@ import { SkillsSection } from '@/sections/SkillsSection'
 import { WorkflowEducationSection } from '@/sections/WorkflowEducationSection'
 
 export const metadata: Metadata = {
-	title: 'Резюме | Dmitriy Kuzmin',
-	description: 'Опыт, навыки и образование видеографа',
-	openGraph: {
-		title: 'Моё резюме - Dmitriy Kuzmin',
-		description: 'Видеограф с опытом создания проектов',
-		images: ['/og-image.jpg'],
+	title: 'Резюме',
+	description:
+		'Опыт работы, навыки и образование Дмитрия Кузьмина. Видеограф и дизайнер с фокусом на motion design и брендинг.',
+
+	alternates: {
+		canonical: '/resume',
 	},
 }
 

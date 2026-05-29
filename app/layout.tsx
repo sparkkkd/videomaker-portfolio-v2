@@ -5,6 +5,7 @@ import { ViewTransitions } from 'next-view-transitions'
 import { QueryProvider } from '@/components/admin/QueryProvider'
 
 import './globals.css'
+import { Metadata } from 'next'
 
 const interTight = Inter_Tight({
 	variable: '--font-inter-tight',
@@ -25,11 +26,82 @@ const drukFont = localFont({
 	preload: true,
 })
 
+export const metadata: Metadata = {
+	title: {
+		default: '',
+		template: '%s | Дмитрий Кузьмин',
+	},
+
+	metadataBase: new URL('https://dmitrikuzmin.ru'),
+
+	verification: {
+		yandex: '80da238240f58665',
+		google: 'tyrFHvy64of4B6eUZB1UzU5s5kPKPQVSUicy2Oz0G-0',
+	},
+
+	keywords: [
+		'видеограф',
+		'видеосъёмка',
+		'монтаж видео',
+		'motion design',
+		'графический дизайн',
+		'брендинг',
+		'айдентика',
+		'рекламные ролики',
+		'портфолио дизайнера',
+		'создание контента',
+	],
+
+	robots: { index: true, follow: true },
+
+	openGraph: {
+		type: 'website',
+		locale: 'ru_RU',
+		url: 'https://dmitrikuzmin.ru',
+		siteName: 'Дмитрий Кузьмин',
+		title: 'Видеосъёмка, монтаж и дизайн | Дмитрий Кузьмин',
+		description: 'Портфолио профессиональных видео и дизайн-проектов.',
+		images: [
+			{
+				url: '/og-image.png',
+				width: 1200,
+				height: 630,
+				alt: 'Портфолио видеографа и дизайнера Дмитрия Кузьмина',
+			},
+		],
+	},
+}
+
 export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: 'Дмитрий Кузьмин',
+		url: 'https://dmitrikuzmin.ru',
+		jobTitle: 'Видеограф и Дизайнер',
+		description:
+			'Создание видеоконтента, монтаж, motion design и графический дизайн для бизнеса и личных брендов.',
+		knowsAbout: [
+			'Видеосъёмка',
+			'Монтаж видео',
+			'Motion Design',
+			'After Effects',
+			'Графический дизайн',
+			'Брендинг',
+			'Adobe Creative Suite',
+			'Figma',
+		],
+		sameAs: [
+			'https://t.me/dm1017y',
+			'https://instagram.com/kuzminwithcamera',
+			'https://behance.net/dm1017y',
+		],
+	}
+
 	return (
 		<QueryProvider>
 			<ViewTransitions>
@@ -40,6 +112,12 @@ export default function RootLayout({
 				${drukFont.variable}
 				h-full antialiased`}
 				>
+					<head>
+						<script
+							type='application/ld+json'
+							dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+						/>
+					</head>
 					<body className='min-h-full flex flex-col font-sans bg-[#fff]'>
 						{children}
 					</body>

@@ -66,7 +66,14 @@ export const AnimatedHeroContent = ({
 				initial='hidden'
 				animate='visible'
 			>
-				<Button>Связаться со мной</Button>
+				<Button
+					link
+					href='https://t.me/dm1017y'
+					target='_blank'
+					rel='noopener noreferrer'
+				>
+					Связаться со мной
+				</Button>
 			</motion.div>
 		</div>
 	)

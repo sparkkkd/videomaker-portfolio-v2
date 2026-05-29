@@ -60,7 +60,7 @@ export const AdminContent = ({ className }: AdminContentProps) => {
 					{activeSection === 'tabs-projects' && (
 						<motion.div
 							variants={ContentChangeAnimation}
-							key={'tabs-content'}
+							key={'tabs-projects'}
 							initial='initial'
 							animate='animate'
 							exit='exit'

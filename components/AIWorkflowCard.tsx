@@ -67,7 +67,7 @@ export const AIWorkflowCard = ({
 
 			<Image
 				src='/workflow-card-bg.svg'
-				alt=''
+				alt='AI инструменты'
 				width={245}
 				height={215}
 				className={twMerge(
@@ -76,6 +76,8 @@ export const AIWorkflowCard = ({
 					'lg:bottom-[0px]',
 					'xl:w-[245px] xl:h-[215px]',
 				)}
+				unoptimized
+				loading='lazy'
 			/>
 		</div>
 	)

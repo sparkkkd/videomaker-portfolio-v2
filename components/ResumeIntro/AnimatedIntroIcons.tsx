@@ -7,7 +7,7 @@ export const AnimatedIntroIcons = ({}) => {
 		<>
 			<FloatingIcon
 				src='/resume-intro-1.svg'
-				alt='resume-intro-1'
+				alt='Видемонтажер'
 				fill
 				className={twMerge(
 					'hidden absolute bottom-[80px] left-[-37px]',
@@ -20,7 +20,7 @@ export const AnimatedIntroIcons = ({}) => {
 			/>
 			<FloatingIcon
 				src='/resume-intro-2.svg'
-				alt='resume-intro-2'
+				alt='Моушн дизайнер'
 				fill
 				className={twMerge(
 					'hidden absolute top-[52px] right-[70px]',
@@ -33,7 +33,7 @@ export const AnimatedIntroIcons = ({}) => {
 			/>
 			<FloatingIcon
 				src='/resume-intro-3.svg'
-				alt='resume-intro-3'
+				alt='Графический дизайнер'
 				fill
 				className={twMerge(
 					'hidden absolute bottom-[155px] right-[-35px]',

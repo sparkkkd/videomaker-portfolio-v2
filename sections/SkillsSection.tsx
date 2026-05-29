@@ -46,10 +46,12 @@ export const SkillsSection = ({ className }: SkillsSectionProps) => {
 					>
 						<Image
 							src='/skills.svg'
-							alt=''
+							alt='Навыки и компетенции'
 							width={222}
 							height={272}
 							className='w-full max-h-[372px] md:max-h-[460px] xl:max-h-full'
+							unoptimized
+							loading='lazy'
 						/>
 					</div>
 				</div>

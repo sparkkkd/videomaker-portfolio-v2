@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { twMerge } from 'tailwind-merge'
 
 interface ContactButtonProps {
@@ -6,7 +7,10 @@ interface ContactButtonProps {
 
 export const ContactButton = ({ className }: ContactButtonProps) => {
 	return (
-		<button
+		<Link
+			href='https://t.me/dm1017y'
+			target='_blank'
+			rel='noopener noreferrer'
 			className={twMerge(
 				className,
 				'w-full h-[40px] flex items-center justify-center font-semibold leading-none bg-white text-black rounded-[10px] text-[14px] transition-colors duration-300 hover:bg-[#8F8F8F]',
@@ -15,6 +19,6 @@ export const ContactButton = ({ className }: ContactButtonProps) => {
 			)}
 		>
 			Обсудить проект
-		</button>
+		</Link>
 	)
 }

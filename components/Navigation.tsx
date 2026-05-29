@@ -65,10 +65,11 @@ export const Navigation = ({ className }: NavigationProps) => {
 			>
 				<Image
 					src='/logo.svg'
-					alt='Dmitry Kuzmin'
+					alt='Dmitri Kuzmin'
 					width={55}
 					height={37}
 					className='lg:w-[84px] lg:h-[57px]'
+					unoptimized
 				/>
 			</Link>
 			<Burger className='md:hidden' onClick={() => setIsMenuOpen(true)} />
@@ -110,6 +111,7 @@ export const Navigation = ({ className }: NavigationProps) => {
 					alt='contact me'
 					width={21}
 					height={21}
+					unoptimized
 				/>
 			</Link>
 

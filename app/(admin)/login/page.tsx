@@ -87,6 +87,7 @@ export default function Login() {
 					width={100}
 					height={100}
 					className={twMerge('h-auto md:w-[150px] md:h-auto')}
+					unoptimized
 				/>
 				<span
 					className={twMerge(

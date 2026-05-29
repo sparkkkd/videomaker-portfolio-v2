@@ -6,7 +6,7 @@ export interface Project {
 	slug: string
 	description: string
 	src: string
-	href: string | null
+	href: string
 	order: number
 	isActive: boolean
 	tab: TabBrief

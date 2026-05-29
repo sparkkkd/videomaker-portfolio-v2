@@ -19,7 +19,7 @@ export const ContactCards = ({ className }: ContactCardsProps) => {
 				'lg:mt-[60px] lg:flex-row lg:gap-[30px]',
 			)}
 		>
-			{CONTACTS.map(({ id, title, label, href, external }) => {
+			{CONTACTS.map(({ id, title, label, href, alt, external }) => {
 				const externalProps = external
 					? { target: '_blank', rel: 'noopener noreferrer' }
 					: {}
@@ -38,13 +38,15 @@ export const ContactCards = ({ className }: ContactCardsProps) => {
 								: 'bg-[#E3E3E3]',
 						)}
 					>
-						{id === 'telegram_contact' && (
+						{id === 'telegram_contact' && alt && (
 							<Image
 								src='/telegram-bg.svg'
-								alt=''
+								alt={alt}
 								width={286}
 								height={244}
+								loading='lazy'
 								className='absolute right-[0px] top-[-10px]'
+								unoptimized
 							/>
 						)}
 
@@ -59,7 +61,14 @@ export const ContactCards = ({ className }: ContactCardsProps) => {
 						>
 							{title}
 							{id === 'telegram_contact' && (
-								<Image src='/star.svg' alt='' width={27} height={27} />
+								<Image
+									src='/star.svg'
+									alt='Telegram star'
+									width={27}
+									height={27}
+									unoptimized
+									loading='lazy'
+								/>
 							)}
 						</div>
 						<h4

@@ -22,10 +22,24 @@ export const AnimatedIntroButtons = ({
 			animate='animate'
 			variants={fadeInUpBlur(0.6, 5, 1)}
 		>
-			<Button className='!text-primary hover:!text-black' variant='black'>
+			<Button
+				className='!text-primary hover:!text-black'
+				variant='black'
+				link
+				href='https://t.me/dm1017y'
+				target='_blank'
+				rel='noopener noreferrer'
+			>
 				Связаться со мной
 			</Button>
-			<Button className={twMerge('mt-[15px]', 'md:mt-0')} outline>
+
+			<Button
+				className={twMerge('mt-[15px]', 'md:mt-0')}
+				outline
+				link
+				href='/DmitriKuzminCV.pdf'
+				target='_blank'
+			>
 				Скачать PDF-резюме
 			</Button>
 		</motion.div>

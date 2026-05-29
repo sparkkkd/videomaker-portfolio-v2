@@ -39,6 +39,8 @@ const LanguageGauge = ({
 						'lg:w-[275px] lg:h-[138px]',
 						'xl:w-[161px] xl:h-[81px]',
 					)}
+					unoptimized
+					loading='lazy'
 				/>
 				<span
 					className={twMerge(
@@ -90,19 +92,19 @@ export const EducationLanguages = ({ className }: EducationLanguagesProps) => {
 					language='english'
 					level='C1'
 					src='en-lang-level.svg'
-					alt='english'
+					alt='Английский язык'
 				/>
 				<LanguageGauge
 					language='español'
 					level='A1'
 					src='es-lang-level.svg'
-					alt='espanol'
+					alt='Испанский язык'
 				/>
 			</div>
 
 			<Image
 				src='/education-card-bg.svg'
-				alt=''
+				alt='Языки'
 				width={635}
 				height={396}
 				className={twMerge(
@@ -111,6 +113,8 @@ export const EducationLanguages = ({ className }: EducationLanguagesProps) => {
 					'lg:w-[635px] lg:h-[396px] lg:bottom-[-142px]',
 					'xl:w-[327px] xl:h-[229px] xl:bottom-[-60px] xl:right-[-10px] xl:left-auto xl:-translate-x-0',
 				)}
+				unoptimized
+				loading='lazy'
 			/>
 		</div>
 	)

@@ -109,6 +109,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 									width={17}
 									height={17}
 									className='pointer-events-none'
+									unoptimized
 								/>
 							</motion.button>
 
@@ -116,9 +117,10 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 							<div className='flex justify-between items-center'>
 								<Image
 									src='/logo.svg'
-									alt='Dmitry Kuzmin'
+									alt='Dmitri Kuzmin'
 									width={55}
 									height={37}
+									unoptimized
 								/>
 							</div>
 
@@ -144,6 +146,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 											alt='contact me'
 											width={19}
 											height={19}
+											unoptimized
 										/>
 									</li>
 								</ul>

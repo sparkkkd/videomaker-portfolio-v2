@@ -23,6 +23,7 @@ export const EducationCard = ({ className, education }: EducationCardProps) => {
 				alt={education.label}
 				width={62}
 				height={62}
+				loading='lazy'
 				className={twMerge(
 					'w-[25px] h-[25px]',
 					'md:w-[35px] md:h-[35px]',

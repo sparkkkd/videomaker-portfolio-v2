@@ -3,6 +3,7 @@ interface IContact {
 	title: string
 	label: string
 	href: string
+	alt?: string
 	external?: boolean
 }
 
@@ -12,6 +13,7 @@ export const CONTACTS: IContact[] = [
 		title: 'Telegram',
 		label: '@dm1017y',
 		href: 'https://t.me/dm1017y',
+		alt: 'Telegram',
 		external: true,
 	},
 	{

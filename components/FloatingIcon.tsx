@@ -58,6 +58,7 @@ export const FloatingIcon = ({
 						alt={alt}
 						fill
 						className={twMerge('object-contain', imageClassName)}
+						unoptimized
 					/>
 				) : (
 					<Image
@@ -66,6 +67,7 @@ export const FloatingIcon = ({
 						width={width}
 						height={height}
 						className={imageClassName}
+						unoptimized
 					/>
 				)}
 			</motion.div>
