@@ -129,7 +129,7 @@ export const ProjectTabsAndContent = ({
 							className='group cursor-pointer'
 						>
 							<Link
-								href={href}
+								href={href || ''}
 								target='_blank'
 								rel='noopener noreferrer'
 								className='relative overflow-hidden rounded-[15px] bg-[#2A2A2A] lg:rounded-[30px]'
