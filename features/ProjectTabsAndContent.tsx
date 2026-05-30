@@ -132,7 +132,7 @@ export const ProjectTabsAndContent = ({
 								href={href || ''}
 								target='_blank'
 								rel='noopener noreferrer'
-								className='relative overflow-hidden rounded-[15px] bg-[#2A2A2A] lg:rounded-[30px]'
+								className='flex relative overflow-hidden rounded-[15px] bg-[#2A2A2A] lg:rounded-[30px]'
 							>
 								<Image
 									src={getFullImageUrl(src)}
