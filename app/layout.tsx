@@ -1,3 +1,5 @@
+'use client'
+
 import localFont from 'next/font/local'
 import { Inter_Tight } from 'next/font/google'
 import { ViewTransitions } from 'next-view-transitions'
@@ -77,6 +79,27 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
+	if (typeof window !== 'undefined') {
+		window.addEventListener(
+			'error',
+			(e) => {
+				console.error('🔥 GLOBAL ERROR:', {
+					message: e.message,
+					filename: e.filename,
+					line: e.lineno,
+					column: e.colno,
+					stack: e.error?.stack,
+				})
+				e.preventDefault()
+			},
+			true,
+		)
+
+		window.addEventListener('unhandledrejection', (e) => {
+			console.error('🔥 UNHANDLED PROMISE:', e.reason)
+		})
+	}
+
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
