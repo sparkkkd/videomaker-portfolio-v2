@@ -20,11 +20,11 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { twMerge } from 'tailwind-merge'
 import toast from 'react-hot-toast'
-import { AnimatePresence, motion } from 'framer-motion'
 
-import { Tab } from '@/lib/api/types/tabs.types'
+import type { Tab } from '@/lib/api/types/tabs.types'
 import { useDeleteTab, useReorderTabs } from '@/lib/api/hooks/tabs.hooks'
 import { getErrorMessage } from '@/lib/utils/errorHandlers'
+
 import { ConfirmDeleteModal } from '../ConfirmDeleteModal'
 
 interface AdminTabsSortableProps {
@@ -62,17 +62,13 @@ function SortableTabRow({
 	}
 
 	return (
-		<motion.tr
+		<tr
 			ref={setNodeRef}
 			style={style}
 			className={twMerge(
 				'hover:bg-secondary transition-colors duration-200',
 				isDragging && 'bg-[#272727]',
 			)}
-			layout
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
 		>
 			<td
 				className='w-10 px-4 py-4 cursor-grab active:cursor-grabbing'
@@ -134,7 +130,7 @@ function SortableTabRow({
 					Удалить
 				</button>
 			</td>
-		</motion.tr>
+		</tr>
 	)
 }
 
@@ -228,21 +224,19 @@ export function AdminTabsSortable({ tabs, onEdit }: AdminTabsSortableProps) {
 								</tr>
 							</thead>
 							<tbody className='divide-y divide-[#272727]'>
-								<AnimatePresence>
-									{sortedIds.map((id, index) => {
-										const tab = tabMap.get(id)
-										return tab ? (
-											<SortableTabRow
-												key={id}
-												tab={tab}
-												index={index}
-												onEdit={onEdit}
-												onDelete={() => setDeletingTabId(tab.id)}
-												isDeleting={isDeletingTab && deletingTabId === tab.id}
-											/>
-										) : null
-									})}
-								</AnimatePresence>
+								{sortedIds.map((id, index) => {
+									const tab = tabMap.get(id)
+									return tab ? (
+										<SortableTabRow
+											key={id}
+											tab={tab}
+											index={index}
+											onEdit={onEdit}
+											onDelete={() => setDeletingTabId(tab.id)}
+											isDeleting={isDeletingTab && deletingTabId === tab.id}
+										/>
+									) : null
+								})}
 							</tbody>
 						</table>
 					</div>
