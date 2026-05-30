@@ -1,10 +1,12 @@
 'use client'
 
 import { useAdminStore } from '@/lib/store/admin.store'
-import { Container } from '../Container'
 import { AnimatePresence, Variants } from 'framer-motion'
-import { AdminTabsContent } from './AdminTabs/AdminTabsContent'
 import { motion } from 'framer-motion'
+
+import { Container } from '../Container'
+
+import { AdminTabsContent } from './AdminTabs/AdminTabsContent'
 import { AdminProjectsContent } from './AdminProjects/AdminProjectsContent'
 import { AdminTabProjectsContent } from './AdminTabProjects/AdminTabProjectsContent'
 
