@@ -20,9 +20,12 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { twMerge } from 'tailwind-merge'
 import toast from 'react-hot-toast'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import { Tab } from '@/lib/api/types/tabs.types'
-import { useReorderTabs } from '@/lib/api/hooks/tabs.hooks'
+import { useDeleteTab, useReorderTabs } from '@/lib/api/hooks/tabs.hooks'
+import { getErrorMessage } from '@/lib/utils/errorHandlers'
+import { ConfirmDeleteModal } from '../ConfirmDeleteModal'
 
 interface AdminTabsSortableProps {
 	tabs: Tab[]
@@ -33,10 +36,14 @@ function SortableTabRow({
 	tab,
 	index,
 	onEdit,
+	onDelete,
+	isDeleting,
 }: {
 	tab: Tab
 	index: number
 	onEdit: (tab: Tab) => void
+	onDelete: () => void
+	isDeleting?: boolean
 }) {
 	const {
 		attributes,
@@ -55,13 +62,17 @@ function SortableTabRow({
 	}
 
 	return (
-		<tr
+		<motion.tr
 			ref={setNodeRef}
 			style={style}
 			className={twMerge(
 				'hover:bg-secondary transition-colors duration-200',
 				isDragging && 'bg-[#272727]',
 			)}
+			layout
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
 		>
 			<td
 				className='w-10 px-4 py-4 cursor-grab active:cursor-grabbing'
@@ -115,11 +126,15 @@ function SortableTabRow({
 				>
 					Редактировать
 				</button>
-				<button className='text-rose-800 hover:text-rose-600 text-sm font-medium transition-colors duration-200'>
+				<button
+					className='text-rose-800 hover:text-rose-600 text-sm font-medium transition-colors duration-200'
+					onClick={onDelete}
+					disabled={isDeleting}
+				>
 					Удалить
 				</button>
 			</td>
-		</tr>
+		</motion.tr>
 	)
 }
 
@@ -134,6 +149,9 @@ export function AdminTabsSortable({ tabs, onEdit }: AdminTabsSortableProps) {
 	const reorderMutation = useReorderTabs()
 
 	const [sortedIds, setSortedIds] = useState(() => tabs.map((t) => t.id))
+
+	const { mutateAsync: deleteTab, isPending: isDeletingTab } = useDeleteTab()
+	const [deletingTabId, setDeletingTabId] = useState<string | null>(null)
 
 	useEffect(() => {
 		startTransition(() => setSortedIds(tabs.map((t) => t.id)))
@@ -162,51 +180,87 @@ export function AdminTabsSortable({ tabs, onEdit }: AdminTabsSortableProps) {
 		})
 	}
 
+	const handleDelete = async (tabId: string) => {
+		try {
+			await deleteTab(tabId)
+			toast.success('Категория успешно удалена')
+		} catch (error) {
+			console.error('Delete tab error:', error)
+			toast.error(getErrorMessage(error))
+		} finally {
+			setDeletingTabId(null)
+		}
+	}
+
+	const tabBeingDeleted = tabs.find((t) => t.id === deletingTabId)
+
 	return (
-		<DndContext
-			sensors={sensors}
-			collisionDetection={closestCenter}
-			onDragEnd={handleDragEnd}
-		>
-			<SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-				<div className='bg-[#1f1f1f] rounded-xl text-white shadow-md border border-[#1f1f1f] overflow-hidden'>
-					<table className='w-full'>
-						<thead className='bg-[#1f1f1f] border-b border-[#272727] shadow-sm'>
-							<tr>
-								<th className='w-10 px-4 py-3'></th>
-								<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
-									Название
-								</th>
-								<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
-									Slug
-								</th>
-								<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
-									Порядок
-								</th>
-								<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
-									Статус
-								</th>
-								<th className='px-6 py-3 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider'>
-									Действия
-								</th>
-							</tr>
-						</thead>
-						<tbody className='divide-y divide-[#272727]'>
-							{sortedIds.map((id, index) => {
-								const tab = tabMap.get(id)
-								return tab ? (
-									<SortableTabRow
-										key={id}
-										tab={tab}
-										index={index}
-										onEdit={onEdit}
-									/>
-								) : null
-							})}
-						</tbody>
-					</table>
-				</div>
-			</SortableContext>
-		</DndContext>
+		<>
+			<DndContext
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
+			>
+				<SortableContext
+					items={sortedIds}
+					strategy={verticalListSortingStrategy}
+				>
+					<div className='bg-[#1f1f1f] rounded-xl text-white shadow-md border border-[#1f1f1f] overflow-hidden'>
+						<table className='w-full'>
+							<thead className='bg-[#1f1f1f] border-b border-[#272727] shadow-sm'>
+								<tr>
+									<th className='w-10 px-4 py-3'></th>
+									<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
+										Название
+									</th>
+									<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
+										Slug
+									</th>
+									<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
+										Порядок
+									</th>
+									<th className='px-6 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider'>
+										Статус
+									</th>
+									<th className='px-6 py-3 text-right text-xs font-semibold text-gray-400 uppercase tracking-wider'>
+										Действия
+									</th>
+								</tr>
+							</thead>
+							<tbody className='divide-y divide-[#272727]'>
+								<AnimatePresence>
+									{sortedIds.map((id, index) => {
+										const tab = tabMap.get(id)
+										return tab ? (
+											<SortableTabRow
+												key={id}
+												tab={tab}
+												index={index}
+												onEdit={onEdit}
+												onDelete={() => setDeletingTabId(tab.id)}
+												isDeleting={isDeletingTab && deletingTabId === tab.id}
+											/>
+										) : null
+									})}
+								</AnimatePresence>
+							</tbody>
+						</table>
+					</div>
+				</SortableContext>
+			</DndContext>
+
+			<ConfirmDeleteModal
+				isOpen={!!tabBeingDeleted}
+				onClose={() => setDeletingTabId(null)}
+				onConfirm={() => tabBeingDeleted && handleDelete(tabBeingDeleted.id)}
+				description={
+					tabBeingDeleted
+						? `Вы действительно хотите удалить категорию "${tabBeingDeleted.label}"? Все проекты в этой категории будут удалены.`
+						: ''
+				}
+				entityName='категорию'
+				isDeleting={isDeletingTab}
+			/>
+		</>
 	)
 }
