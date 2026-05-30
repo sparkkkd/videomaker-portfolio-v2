@@ -1,5 +1,3 @@
-'use client'
-
 import { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { Inter_Tight } from 'next/font/google'
