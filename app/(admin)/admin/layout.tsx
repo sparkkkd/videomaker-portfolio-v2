@@ -17,12 +17,10 @@ export default function layout({ children }: { children: React.ReactNode }) {
 					},
 				}}
 			/>
-			{/* <AuthProvider> */}
 			<div className='min-h-screen bg-secondary flex flex-col'>
 				<AdminHeader />
 				<main className='flex-1 p-4'>{children}</main>
 			</div>
-			{/* </AuthProvider> */}
 		</>
 	)
 }
