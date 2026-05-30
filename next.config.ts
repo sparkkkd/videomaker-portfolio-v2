@@ -1,6 +1,8 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+	transpilePackages: ['next-auth'],
+
 	images: {
 		dangerouslyAllowLocalIP: process.env.NODE_ENV === 'development',
 
