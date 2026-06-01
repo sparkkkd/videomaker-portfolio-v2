@@ -68,9 +68,15 @@ const itemVariants: Variants = {
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 	const [mounted, setMounted] = useState<boolean>(false)
 
-	useEffect(() => startTransition(() => setMounted(true)), [])
+	useEffect(() => {
+		if (typeof document !== 'undefined' && document.body) {
+			startTransition(() => setMounted(true))
+		}
+	}, [])
 
-	if (!mounted) return null
+	if (!mounted || typeof document === 'undefined' || !document.body) {
+		return null
+	}
 
 	return createPortal(
 		<>
@@ -84,6 +90,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 							exit={{ opacity: 0 }}
 							transition={{ duration: 0.7 }}
 							onClick={onClose}
+							suppressHydrationWarning
 						/>
 
 						<motion.div
@@ -92,6 +99,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 							initial='closed'
 							animate='open'
 							exit='closed'
+							suppressHydrationWarning
 						>
 							<motion.button
 								type='button'
