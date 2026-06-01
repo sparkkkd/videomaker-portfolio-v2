@@ -71,7 +71,7 @@ export const experience: ExperienceItem[] = [
 	{
 		id: 'exp_montage_designer_2',
 		periodStart: '03.2025',
-		periodEnd: 'наст. время',
+		periodEnd: '05.2026',
 		title: 'Монтажер/дизайнер',
 		company: 'IT-компания «Loginom»',
 		description: [
