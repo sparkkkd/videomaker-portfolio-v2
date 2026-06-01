@@ -67,7 +67,6 @@ const itemVariants: Variants = {
 
 export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 	const [mounted, setMounted] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	useEffect(() => {
 		if (typeof document !== 'undefined' && document.body) {
@@ -75,48 +74,8 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 		}
 	}, [])
 
-	useEffect(() => {
-		const handleError = (e: ErrorEvent) => {
-			console.error('🔥 Caught error:', e.message, e.error)
-			setError(e.message || 'Unknown error')
-		}
-
-		const handleRejection = (e: PromiseRejectionEvent) => {
-			console.error('🔥 Unhandled promise:', e.reason)
-			setError(String(e.reason))
-		}
-
-		window.addEventListener('error', handleError)
-		window.addEventListener('unhandledrejection', handleRejection)
-
-		return () => {
-			window.removeEventListener('error', handleError)
-			window.removeEventListener('unhandledrejection', handleRejection)
-		}
-	}, [])
-
 	if (!mounted || typeof document === 'undefined' || !document.body) {
 		return null
-	}
-
-	if (error) {
-		return (
-			<div className='fixed inset-0 z-[10000] bg-red-900 text-white p-4 overflow-auto'>
-				<h2 className='text-xl font-bold mb-4'>Ошибка на клиенте</h2>
-				<pre className='text-xs bg-black/30 p-2 rounded whitespace-pre-wrap'>
-					{error}
-				</pre>
-				<button
-					onClick={() => {
-						setError(null)
-						onClose()
-					}}
-					className='mt-4 px-4 py-2 bg-white text-red-900 rounded font-bold'
-				>
-					Закрыть и попробовать снова
-				</button>
-			</div>
-		)
 	}
 
 	return createPortal(
@@ -207,7 +166,7 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 								variants={itemVariants}
 							>
 								{CONTACTS.map((item) => {
-									const externalProps = external
+									const externalProps = item.external
 										? { target: '_blank', rel: 'noopener noreferrer' }
 										: {}
 									return (
