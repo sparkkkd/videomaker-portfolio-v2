@@ -63,7 +63,7 @@ export const metadata: Metadata = {
 		description: 'Портфолио профессиональных видео и дизайн-проектов.',
 		images: [
 			{
-				url: '/og-image.png',
+				url: 'https://dmitrikuzmin.ru/og-image.png',
 				width: 1200,
 				height: 630,
 				alt: 'Портфолио видеографа и дизайнера Дмитрия Кузьмина',
